@@ -1,0 +1,21 @@
+{
+  "port": "1999",
+  "mongodb": {
+    "host": "127.0.0.1",
+    "port": "27017",
+    "user": "edda",
+    "pwd": "edda",
+    "database": "edda",
+    "collections": [
+      "apps",
+      "customers",
+      "licenses",
+      "serials",
+      "nodes"
+    ]
+  },
+  "users": {
+    "admin": "123",
+    "lisi": "123"
+  }
+}

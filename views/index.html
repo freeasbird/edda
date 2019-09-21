@@ -1,0 +1,914 @@
+{{define "index.html"}}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{{.title}}</title>
+        <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            body, html, two-bar {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            #products-download button {
+                margin-right: 10px;
+                margin-bottom: 10px;
+            }
+
+            .navbar-nav > li > a {
+                padding-top: 19px;
+                padding-bottom: 18px;
+            }
+        </style>
+    </head>
+
+    <body>
+    <!--  顶部导航栏 -->
+    <div class="row container-fluid one-bar" style="background-color: rgb(18,43,60)">
+        <div class="col-md-2">
+            <h3 style="color: #286090">EDDA</h3>
+        </div>
+        <div class="col-md-2 col-md-push-8" style="height: 100%">
+            <ul class="nav navbar-nav ">
+                <li><a href="javascript:void(0)" onClick="Help()">帮助</a></li>
+                <li><a href="javascript:void(0)" onClick="Logout()">注销</a></li>
+                <li><a href="javascript:void(0)" onClick="ClickLogin()">登录</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!--  Main -->
+    <div class="row container-fluid two-bar" style="padding: 0;height: 100%">
+        <!--  左侧导航栏 -->
+        <div class="col-md-1 navbar-left" style="background-color: rgb(18,43,60);padding-right: 0;height: 200%">
+            <ul class="nav nav-stacked" role="tablist" id="leftTabs">
+                <li role="presentation" class="active"><a href="#create-license" aria-controls="create-license"
+                                                          role="tab" data-toggle="tab"
+                                                          onClick="CreateLicense()">新建授权</a></li>
+                <li role="presentation"><a href="#app-manager" aria-controls="app-manager" role="tab"
+                                           data-toggle="tab" onClick="GetAppList(1)">应用管理</a></li>
+                <li role="presentation"><a href="#license-list" aria-controls="license-list" role="tab"
+                                           data-toggle="tab" onClick="GetLicenseList(1)">授权历史</a></li>
+            </ul>
+        </div>
+        <!--  标签页 -->
+        <div class="col-md-11">
+            <div class="tab-content">
+                <!--新建授权-->
+                <div role="tabpanel" class="tab-pane active" id="create-license">
+                    <div class="row container-fluid" style="margin-top: 1%">
+                        <!--解析授权-->
+                        <div class="col-md-11">
+                            <div class="panel panel-default middle-center file">
+                                <div class="panel-heading">
+                                    <h5 class="panel-title">解析序列号</h5>
+                                </div>
+                                <div class="panel-body">
+                                    <h4>序列号</h4>
+                                    <form>
+                                        <div class="form-group">
+                                            <textarea name="serial-num" cols="40" rows="10" placeholder="序列号"
+                                                      maxlength="40960" class="form-control" required
+                                                      id="serial-num"></textarea>
+                                        </div>
+                                    </form>
+                                    <input type="button" class="btn btn-primary" onClick="ResolveSerial()" name="解析"
+                                           value="解析" id="resolve-serial"></input>
+                                </div>
+                            </div>
+                            <!-- 新建授权 -->
+                        </div>
+                        <!--新建-->
+                        <div class="col-md-11">
+                            <div class="panel panel-default middle-center file">
+                                <div class="panel-heading">
+                                    <h5 class="panel-title">新建授权</h5>
+                                </div>
+                                <div class="panel-body">
+                                    <form class="form-horizontal" id="license-form">
+                                        <div class="form-group">
+                                            <label for="license-customer" class="col-sm-1 control-label">客户</label>
+                                            <div class="col-sm-11">
+                                                <input type="text" class="form-control" id="license-customer"
+                                                       placeholder="客户">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="license-project" class="col-sm-1 control-label">项目</label>
+                                            <div class="col-sm-11">
+                                                <input type="text" class="form-control" id="license-project"
+                                                       placeholder="项目">
+                                            </div>
+                                        </div>
+                                        <div id="license-apps"></div>
+                                    </form>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-1 col-sm-10">
+                                            <button type="submit" class="btn btn-primary" onclick="SaveLicense()">提交
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 新建授权 -->
+                        </div>
+                    </div>
+                </div><!--新建授权-->
+                <!--应用管理-->
+                <div role="tabpanel" class="tab-pane" id="app-manager">
+                    <div class="row container-fluid" style="margin-top: 1%">
+                        <div class="col-md-11">
+                            <!-- 功能按钮 -->
+                            <div class="row" style="margin-bottom: 8px">
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-primary" id="create-app"
+                                            onClick="CreateApp()">创建
+                                    </button>
+                                </div>
+                            </div>
+
+                            <table class="table table-bordered table-hover" style="min-height:42em">
+                                <thead class="table-thead">
+                                <tr>
+                                    <th><span>APP</span></th>
+                                    <th><span>KEY</span></th>
+                                    <th><span>简介</span></th>
+                                    <th><span>操作</span></th>
+                                </tr>
+                                </thead>
+                                <tbody id="app-list">
+                                </tbody>
+                            </table>
+
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination" id="apps-page">
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div><!--应用管理-->
+                <!--授权历史-->
+                <div role="tabpanel" class="tab-pane" id="license-list">
+                    <div class="row container-fluid" style="margin-top: 1%">
+                        <div class="col-md-11">
+                            <table class="table table-bordered table-hover" style="min-height:42em">
+                                <thead class="table-thead">
+                                <tr>
+                                    <th><span>客户</span></th>
+                                    <th><span>项目</span></th>
+                                    <th><span>生成时间</span></th>
+                                    <th><span>操作</span></th>
+                                </tr>
+                                </thead>
+                                <tbody id="license-list-body">
+                                </tbody>
+                            </table>
+
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination" id="licenses-page">
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div><!--授权历史-->
+            </div>
+        </div>
+    </div>
+
+    <!-- 解析结果模态框 -->
+    <div id="resolve-result-modal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">解析结果</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="resolve-result" class="alert" role="alert"></div>
+                    <!-- <div id="license-result" class="alert alert-danger" role="alert">..8888.</div> -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+    <!--  登录模态框 -->
+    <div id="login-modal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    <div style="text-align:center">
+                        <h4 class="modal-title">请先登录</h4>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="username">用户名</label>
+                            <input type="text" class="form-control" id="username" placeholder="用户名">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">密码</label>
+                            <input type="text" class="form-control" id="password" placeholder="密码">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="text-align:center" id="login">
+                    <button type="button" class="btn btn-primary btn-block" data-dismiss="modal">登录</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!--  帮助模态框 -->
+    <div id="help-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">帮助</h4>
+                </div>
+                <div class="modal-body" id="help-msg">
+                    帮助信息。。。。
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  应用模态框 -->
+    <div id="app-modal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">新建应用</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type='hidden' id="edit-app-id">
+                        <div class="form-group">
+                            <label for="edit-app-name">应用名称</label>
+                            <input type="text" class="form-control" id="edit-app-name"
+                                   placeholder="应用名称">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-app-key">应用KEY</label>
+                            <input type="text" class="form-control" id="edit-app-key"
+                                   placeholder="应用KEY">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-app-introduction">应用简介</label>
+                            <input type="text" class="form-control" id="edit-app-introduction"
+                                   placeholder="应用简介">
+                        </div>
+                        <div>
+                            <h5>应用属性</h5>
+                            <a class="btn text-primary" id="app-add-attr" onclick="AppAddAttr()">添加</a>
+                        </div>
+
+                        <div class="form-inline" id="app-attr-warp">
+
+                            <div style="margin-bottom: 3px" class="app-attr">
+                                <div class="form-group">
+                                    <label for="edit-app-attr0-name">属性名</label>
+                                    <input type="text" class="form-control" id="edit-app-attr0-name"
+                                           placeholder="属性名">
+                                </div>
+                                <div class="form-group">
+                                    <label for="edit-app-attr0-key">属性KEY</label>
+                                    <input type="text" class="form-control" id="edit-app-attr0-key"
+                                           placeholder="属性KEY">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" id="save-app" onclick="SaveApp()">保存</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!--  授权详情模态框 -->
+    <div id="license-modal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">授权详情</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type='hidden' id="detail-license-id">
+                        <div class="form-group">
+                            <label for="detail-license-customer">客户</label>
+                            <input type="text" class="form-control" id="detail-license-customer"
+                                   placeholder="客户">
+                        </div>
+                        <div class="form-group">
+                            <label for="detail-license-project">项目</label>
+                            <input type="text" class="form-control" id="detail-license-project"
+                                   placeholder="项目">
+                        </div>
+                        <div class="form-group">
+                            <label for="detail-license-generation">授权时间</label>
+                            <input type="text" class="form-control" id="detail-license-generation"
+                                   placeholder="授权时间">
+                        </div>
+                        <div id="license-apps-warp"></div>
+
+                        <div class="form-horizontal" id="license-apps-attrs"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!-- 操作结果提示模态框 -->
+    <div id="request-modal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="result-title">操作</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="result-body" class="alert" role="alert"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+    </body>
+    <script src="/static/js/jquery-3.3.1.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/jquery.cookie.js"></script>
+    <script>
+        const base_url = "/edda/api/v1";
+        let method = "";
+        let size = 10;
+        const cookie_username_key = "edda_username";
+        const cookie_password_key = "edda_password";
+        const cookie_key = "edda_cookie";
+        let num = 1;
+
+        //////////// app ///////////////////
+        // 应用个数
+        function CountApp(current) {
+            $.ajax({
+                url: base_url + "/count/" + "apps",
+                type: 'GET',
+                username: $.cookie(cookie_username_key),
+                password: $.cookie(cookie_password_key),
+                dataType: "json",
+                success: function (resp) {
+                    let page = Math.ceil(resp.count / size);
+                    let ul = $('#apps-page');
+                    ul.empty();
+                    let pre = $(`<li><a href="javascript:void(0)" onclick="GetAppList(` + (current - 1) + `)" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>`);
+                    if (current == 1) {
+                        pre.addClass("disabled");
+                        pre.removeAttr("onclick")
+                        pre.off()
+                    }
+                    ul.append(pre);
+                    for (let i = 1; i <= page; ++i) {
+                        let li = $('<li><a href="javascript:void(0)" onclick="GetAppList(' + i + ')">' + i + '</a></li>');
+                        if (current == i) {
+                            li.addClass("active")
+                        }
+                        ul.append(li)
+                    }
+                    let next = $('<li><a href="javascript:void(0)" onclick="GetAppList(' + (current + 1) + ')" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>');
+                    if (current >= page) {
+                        next.addClass("disabled");
+                        next.removeAttr("onclick");
+                        next.off()
+                    }
+                    ul.append(next)
+                }
+            })
+        }
+
+        // 应用列表
+        function GetAppList(page) {
+            CountApp(page);
+            $.ajax({
+                url: base_url + "/app/" + "?page=" + page + "&size=" + size,
+                type: "GET",
+                username: $.cookie(cookie_username_key),
+                password: $.cookie(cookie_password_key),
+                dataType: "json",
+                success: function (resp) {
+                    $("#app-list").empty();
+                    for (let i = 0; i < resp.data.length; ++i) {
+                        let lic = resp.data[i];
+                        let tr = $('<tr></tr>');
+                        tr.append($('<td></td>').html(lic.name));
+                        tr.append($('<td></td>').html(lic.key));
+                        tr.append($('<td></td>').html(lic.introduction));
+                        tr.append($('<td><a class="opt-btn btn text-primary" href="javascript:void(0)" onClick="EditApp($(this))">编辑</a><a class="opt-btn btn text-primary" href="javascript:void(0)" onClick="DelApp($(this))">删除</a></td>'));
+                        tr.append($("<input type='hidden'>").val(lic.id));
+                        $("#app-list").append(tr)
+                    }
+                }
+            })
+        }
+
+        // 点击编辑 （app）
+        function EditApp(obj) {
+            let id = obj.parent().siblings("input").val();
+            $.ajax({
+                url: base_url + "/app/" + id,
+                type: 'GET',
+                username: $.cookie(cookie_username_key),
+                password: $.cookie(cookie_password_key),
+                dataType: "json",
+                success: function (resp) {
+                    method = "POST"; // 更改SaveApp的请求方法为POST
+                    $('#app-modal').modal("show");
+                    let obj = resp.data[0];
+                    $('#edit-app-name').val(obj.name);
+                    $('#edit-app-key').val(obj.key);
+                    $('#edit-app-introduction').val(obj.introduction);
+                    $('#edit-app-id').val(id);
+                    let warp = $('#app-attr-warp');
+                    warp.empty();
+                    for (let i = 0; i < obj.attrs.length; ++i) {
+                        let name = "edit-app-attr" + num + "-name";
+                        let key = "edit-app-attr" + num + "-key";
+                        let str = '<div style="margin-bottom: 3px;" class="app-append-attr app-attr"><div class="form-group"><label for="' + name + '">属性名</label>&thinsp;<input type="text" class="form-control" id="' + name + '"placeholder="属性名"></div><div class="form-group"><label for="' + key + '">&thinsp;&thinsp;属性KEY</label>&thinsp;<input type="text" class="form-control" id="' + key + '"placeholder="属性KEY"></div><button type="button" class="close app-remove-attr" data-dismiss="alert" aria-label="Close" onClick="AppRemoveAttr($(this))"><span aria-hidden="true">&times;</span></button></div>';
+                        let div = $(str);
+                        div.find("input").eq(0).val(obj.attrs[i].name);
+                        div.find("input").eq(1).val(obj.attrs[i].key);
+                        num++;
+                        warp.append(div)
+                    }
+                }
+            })
+        }
+
+        // 删除APP
+        function DelApp(obj) {
+            let id = obj.parent().siblings("input").val();
+            $.ajax({
+                url: base_url + "/app/" + id,
+                type: 'DELETE',
+                username: $.cookie(cookie_username_key),
+                password: $.cookie(cookie_password_key),
+                dataType: "json",
+                success: function (resp) {
+                    GetAppList(1)
+                }
+            })
+        }
+
+        // 新建应用
+        function CreateApp() {
+            $('#app-modal').modal("show");
+            $('#edit-app-name').val("");
+            $('#edit-app-key').val("");
+            $('#edit-app-introduction').val("");
+            $('#edit-app-attr0-name').val("");
+            $('#edit-app-attr0-key').val("");
+            $("#app-attr-warp .app-append-attr").remove();
+            method = "PUT"  // 更改SaveApp的请求方法
+        }
+
+        // 保存应用
+        function SaveApp() {
+            let id = $('#edit-app-id').val();
+            $.ajax({
+                url: base_url + "/app/" + id,
+                type: method,
+                username: $.cookie(cookie_username_key),
+                password: $.cookie(cookie_password_key),
+                dataType: "json",
+                processData: false,
+                headers: {'Content-Type': 'application/json'},
+                // ajax 传body的方法
+                data: JSON.stringify({
+                    "name": $('#edit-app-name').val(),
+                    "key": $('#edit-app-key').val(),
+                    "introduction": $("#edit-app-introduction").val(),
+                    "attrs": GetAttrs($('#app-attr-warp').find(".app-attr")),
+                }),
+                success: function (resp) {
+                    if (resp.code == 200) {
+                        $('#app-modal').modal("hide");
+                        // $("#license-create").removeClass("active");
+                        // $('#license-table').addClass("active");
+                        // $('#license-list-edit').hide();
+                        // $('#license-list-create').hide();
+                        // $('#license-list-table').show();
+                        GetAppList(1)
+                    }
+                }
+            })
+        }
+
+        // 添加属性
+        function AppAddAttr() {
+            let name = "edit-app-attr" + num + "-name";
+            let key = "edit-app-attr" + num + "-key";
+            let str = '<div style="margin-bottom: 3px;" class="app-append-attr app-attr"><div class="form-group"><label for="' + name + '">属性名</label>&thinsp;<input type="text" class="form-control" id="' + name + '"placeholder="属性名"></div><div class="form-group"><label for="' + key + '">&thinsp;&thinsp;属性KEY</label>&thinsp;<input type="text" class="form-control" id="' + key + '"placeholder="属性KEY"></div><button type="button" class="close app-remove-attr" data-dismiss="alert" aria-label="Close" onClick="AppRemoveAttr($(this))"><span aria-hidden="true">&times;</span></button></div>';
+            let div = $(str);
+            $("#app-attr-warp").append(div);
+            num++;
+        }
+
+        // 移除属性
+        function AppRemoveAttr(obj) {
+            obj.parent().remove();
+        }
+
+        // 获取属性
+        function GetAttrs(obj) {
+            let attrs = new Array();
+            obj.each(function () {
+                let attr = {};
+                attr.name = $(this).children(".form-group").eq(0).children("input").val();
+                attr.key = $(this).children(".form-group").eq(1).children("input").val();
+                attrs.push(attr);//添加至数组
+            });
+            return attrs
+        }
+
+        //////// license  //////
+
+        // 解析序列号
+        function ResolveSerial() {
+            $.ajax({
+                url: base_url + "/serial/",
+                type: "POST",
+                username: $.cookie(cookie_username_key),
+                password: $.cookie(cookie_password_key),
+                dataType: "json",
+                processData: false,
+                headers: {'Content-Type': 'application/json'},
+                // ajax 传body的方法
+                data: JSON.stringify({
+                    "code": $('#serial-num').val(),
+                }),
+                success: function (resp) {
+                    if (resp.code == 200) {
+                        $("#resolve-result-modal").modal("show");
+                        let warp = $('#resolve-result');
+                        warp.empty();
+                        for (let i = 0; i < resp.data.length; ++i) {
+                            let msg = $("<p></p>").html(resp.data[i]);
+                            warp.append(msg)
+                        }
+                        $('#license-customer').val("");
+                        $('#license-project').val("");
+                        // $('#app-modal').modal("hide");
+                        // $("#license-create").removeClass("active");
+                        // $('#license-table').addClass("active");
+                        // $('#license-list-edit').hide();
+                        // $('#license-list-create').hide();
+                        // $('#license-list-table').show();
+                        GetAllAPP()
+                    }
+                }
+            })
+        }
+
+        // 获取所有app
+        function GetAllAPP() {
+            $.ajax({
+                url: base_url + "/app/" + "?page=" + 1 + "&size=" + size * 100,
+                type: "GET",
+                username: $.cookie(cookie_username_key),
+                password: $.cookie(cookie_password_key),
+                dataType: "json",
+                success: function (resp) {
+                    let warps = $("#license-apps");
+                    warps.empty();
+                    for (let i = 0; i < resp.data.length; ++i) {
+                        let app = resp.data[i];
+                        let warp = $('<div class="license-app"></div>');
+                        // name
+                        warp.append($('<p class="text-center"></p>').html('<h4>' + app.name + '</h4>'));
+                        // key
+                        warp.append($("<input type='hidden'>").val(app.key));
+                        // 过期时间
+                        let exp = '<div class="form-group"><label class="col-sm-1 control-label">到期时间</label><div class="col-sm-11"><input type="date" class="form-control" placeholder="到期时间"></div></div>';
+                        warp.append($(exp));
+                        let ins = '<div class="form-group"><label class="col-sm-1 control-label">实例</label><div class="col-sm-11"><input type="number" class="form-control" placeholder="应用或实例个数"></div></div>';
+                        warp.append(ins);
+                        for (let j = 0; j < app.attrs.length; ++j) {
+                            let attr = app.attrs[j];
+                            let at = '<div class="form-group form-app-attr"><input type="hidden" value="' + attr.key + '"><label class="col-sm-1 control-label">' + attr.name + '</label><div class="col-sm-11"><input type="number" class="form-control" id="' + app.key + "-" + attr.key + '" placeholder="' + attr.key + '"></div></div>'
+                            warp.append($(at))
+                        }
+                        warps.append(warp)
+                    }
+                }
+            })
+        }
+
+        function SaveLicense() {
+            $.ajax({
+                url: base_url + "/license/",
+                type: "PUT",
+                username: $.cookie(cookie_username_key),
+                password: $.cookie(cookie_password_key),
+                dataType: "json",
+                processData: false,
+                headers: {'Content-Type': 'application/json'},
+                // ajax 传body的方法
+                data: JSON.stringify({
+                    "customer": $('#license-customer').val(),
+                    "project": $('#license-project').val(),
+                    "serial_num": $("#serial-num").val(),
+                    "apps": GetInputApps(),
+                }),
+                success: function (resp) {
+                    if (resp.code == 200) {
+                        $('#app-modal').modal("hide");
+                        $("#license-apps").empty();
+                        // $("#license-create").removeClass("active");
+                        // $('#license-table').addClass("active");
+                        // $('#license-list-edit').hide();
+                        // $('#license-list-create').hide();
+                        // $('#license-list-table').show();
+                    }
+                }
+            })
+        }
+
+        function CreateLicense() {
+
+        }
+
+        function GetInputApps() {
+            let apps = {};
+            $('#license-apps').find(".license-app").each(function () {
+                let app = {};
+                let app_key = $(this).find("input").eq(0).val();
+                app["name"] = $(this).find('h4').html();
+                let exp = $(this).find("input[type='date']").val();
+                app["expire_time"] = exp;
+                let ins = parseInt($(this).find("input").eq(2).val());
+                app["instance"] = ins;
+                app.attr = {};
+                $(this).find("div.form-app-attr").each(function () {
+                    let key = $(this).find("input").eq(0).val();
+                    let val = parseInt($(this).find("input").eq(1).val());
+                    app.attr[key] = val
+                });
+                if (ins > 0 && exp != "") {
+                    apps[app_key] = app
+                }
+            });
+            return apps
+        }
+
+        function CountLicense(current) {
+            $.ajax({
+                url: base_url + "/count/" + "licenses",
+                type: 'GET',
+                username: $.cookie(cookie_username_key),
+                password: $.cookie(cookie_password_key),
+                dataType: "json",
+                success: function (resp) {
+                    let page = Math.ceil(resp.count / size);
+                    let ul = $('#licenses-page');
+                    ul.empty();
+                    let pre = $(`<li><a href="javascript:void(0)" onclick="GetLicenseList(` + (current - 1) + `)" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>`);
+                    if (current == 1) {
+                        pre.addClass("disabled");
+                        pre.removeAttr("onclick");
+                        pre.off()
+                    }
+                    ul.append(pre);
+                    for (let i = 1; i <= page; ++i) {
+                        let li = $('<li><a href="javascript:void(0)" onclick="GetLicenseList(' + i + ')">' + i + '</a></li>');
+                        if (current == i) {
+                            li.addClass("active")
+                        }
+                        ul.append(li)
+                    }
+                    let next = $('<li><a href="javascript:void(0)" onclick="GetLicenseList(' + (current + 1) + ')" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>');
+                    if (current >= page) {
+                        next.addClass("disabled");
+                        next.removeAttr("onclick");
+                        next.off()
+                    }
+                    ul.append(next)
+                }
+            })
+        }
+
+        // 授权详情
+        function DetailLicense(obj) {
+            let id = obj.parent().siblings("input").val();
+            $.ajax({
+                url: base_url + "/license/" + id,
+                type: 'GET',
+                username: $.cookie(cookie_username_key),
+                password: $.cookie(cookie_password_key),
+                dataType: "json",
+                success: function (resp) {
+                    $('#license-modal').modal("show");
+                    let obj = resp.data[0];
+                    $('#detail-license-customer').val(obj.customer);
+                    $('#detail-license-project').val(obj.project);
+                    $('#detail-license-generation').val(obj.generation_time);
+                    $('#detail-license-id').val(id);
+                    let warp = $('#license-apps-warp');
+                    warp.empty();
+                    for (let name in obj.apps) {
+                        let app = obj.apps[name];
+                        console.log(app)
+                        let p = $('<p class="text-left"></p>').html('<h4>' + app.name + '</h4>');
+                        warp.append(p);
+                        let str = '<div style="margin-bottom: 3px" class="form-inline"><div class="form-group"><label></label>&thinsp;&thinsp;<input type="text" class="form-control"></div>&thinsp;&thinsp;&thinsp;&thinsp;<div class="form-group"><label></label>&thinsp;&thinsp;<input type="text" class="form-control"></div></div>';
+                        let div = $(str);
+                        div.find("label").eq(0).html("到期");
+                        div.find("input").eq(0).val(formatTime(app.expire_time));
+                        div.find("label").eq(1).html("实例");
+                        div.find("input").eq(1).val(app.instance);
+                        warp.append(div);
+                        let str2 = '<div style="margin-bottom: 3px"><div class="form-group"><label></label>&thinsp;&thinsp;<input type="text" class="form-control"></div></div>';
+                        for (let key in app.attr) {
+                            let div = $(str2);
+                            div.find("label").eq(0).html(key);
+                            div.find("input").eq(0).val(app.attr[key]);
+                            warp.append(div);
+                        }
+                    }
+                }
+            })
+        }
+
+        // 授权列表
+        function GetLicenseList(page) {
+            $('#license-list-edit').hide();
+            $('#license-list-create').hide();
+            $('#license-list-table').show();
+            CountLicense(page);
+            $.ajax({
+                url: base_url + "/license/" + "?page=" + page + "&size=" + size,
+                type: "GET",
+                username: $.cookie(cookie_username_key),
+                password: $.cookie(cookie_password_key),
+                dataType: "json",
+                success: function (resp) {
+                    $("#license-list-body").empty();
+                    for (let i = 0; i < resp.data.length; ++i) {
+                        let lic = resp.data[i];
+                        // console.log(lic)
+                        let tr = $('<tr></tr>');
+                        tr.append($('<td></td>').html(lic.customer));
+                        tr.append($('<td></td>').html(lic.project));
+                        tr.append($('<td></td>').html(formatTime(lic.generation_time)));
+                        tr.append($('<td><a class="opt-btn btn text-primary" href="javascript:void(0)" onClick="DetailLicense($(this))">详情</a><a class="opt-btn btn text-primary" href="javascript:void(0)" onClick="CopyCipher($(this))">复制</a></td>'));
+                        tr.append($("<input type='hidden'>").val(lic.id));
+                        tr.append($("<input type='hidden' class='cipher'>").val(lic.cipher));
+                        $("#license-list-body").append(tr)
+                    }
+                }
+            });
+        }
+
+        function CopyCipher(obj) {
+            let cipher = obj.parent().siblings("input.cipher");
+            copyCode(cipher, obj)
+        }
+
+        // 复制序列号
+        function copyCode(obj1, obj2) {
+            var code = obj1.val();
+            var copy_obj = document.createElement("textarea");
+            document.body.append(copy_obj);
+            copy_obj.style.position = "absolute";
+            copy_obj.style.left = "-999999px";
+            copy_obj.value = code;
+            copy_obj.select();
+            document.execCommand("copy"); // 执行浏览器复制命令
+            obj2.css({"color": "red"});
+            document.body.removeChild(copy_obj);
+        }
+
+        function formatTime(obj) {
+            let data = new Date(obj);
+            let year = data.getFullYear();  //获取年
+            let month = data.getMonth() + 1;    //获取月
+            let day = data.getDate(); //获取日
+            let hours = data.getHours();
+            let minutes = data.getMinutes();
+            let seconds = data.getSeconds();
+            // return year + "年" + month + "月" + day + "日" + " " + hours + ":" + minutes + ":" + seconds;
+            return year + "年" + month + "月" + day + "日";
+        }
+
+        // 帮助
+        function Help() {
+            $.ajax({
+                url: base_url + "/server/help",
+                type: "GET",
+                username: $("#username").val(),
+                password: $("#password").val(),
+                dataType: "json",
+                success: function (data) {
+                    $("#help-msg").empty();
+                    for (i = 0; i < data.msg.length; i++) {
+                        let p = $("<p></p>").text(data.msg[i]);
+                        $("#help-msg").append(p)
+                    }
+                    $("#help-modal").modal("show")
+                }
+            });
+        }
+
+        // 登录
+        function Login() {
+            $.ajax({
+                url: base_url + "/auth/login",
+                type: "POST",
+                username: $("#username").val(),
+                password: $("#password").val(),
+                dataType: "json",
+                success: function (data) {
+                    $.cookie(cookie_key, data.cookie);
+                    $.cookie(cookie_username_key, $("#username").val());
+                    $.cookie(cookie_password_key, $("#password").val());
+                    // $.cookie("product_db_cookie",value,{ expires: 1, path: "/" })
+                    $("#login-modal").modal("hide"); //关闭模态框
+                    window.location.reload();
+                    // GetLicense()
+                },
+                error: function (XHR) {
+                    $("#login-modal").modal("show");
+                    if (XHR.status == 401) {
+                        $("#login-modal").modal("show")
+                    }
+                }
+            })
+        }
+
+        // 注销
+        function Logout() {
+            $.cookie(cookie_username_key, null);
+            $.cookie(cookie_password_key, null);
+            $.cookie(cookie_key, null);
+            $("#login-modal").modal("show");
+            window.location.reload();
+            // $("#login-modal").modal("show")
+            $("#username").val("");
+            $("#password").val("");
+        }
+
+        function ClickLogin() {
+            $("#login-modal").modal("show")
+        }
+
+        $(document).ready(function () {
+            if ($.cookie(cookie_key) == null) {
+                $("#login-modal").modal("show")
+            } else {
+                $("#leftTabs a").eq(0).css({"background-color": "#10ffd0"});
+                // CreateLicense()
+            }
+            $('#license-customer').val("");
+            $('#license-project').val("");
+            // 登录
+            $("#login").on("click", Login);
+            // 切换标签
+            $("#leftTabs a").click(function (e) {
+                e.preventDefault();
+                $("#leftTabs a").css({"background-color": ""});
+                $(this).css({"background-color": "#10ffd0"});
+                $(this).tab("show")
+            });
+            // $(".app-remove-attr").click(AddAppAttr)
+        })
+    </script>
+    </html>
+{{end}}
