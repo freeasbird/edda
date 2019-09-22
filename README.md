@@ -11,6 +11,7 @@
 
 ```
 cd /home/admin
+git clone git@github.com:offer365/edda.git
 wget https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel70-3.6.5.tgz
 tar xf mongodb-linux-x86_64-rhel70-3.6.5.tgz -C /home/admin/
 mv /home/admin/mongodb-linux* /home/admin/mongodb
@@ -35,14 +36,13 @@ systemctl restart mongodb
 # use edda
 # db.auth("edda","edda") # 返回1
 
-git clone git@github.com:offer365/edda.git
 cd edda;go build
 cp scripts/edda.service /usr/lib/systemd/system/
 systemctl enable edda
 systemctl start edda
 ```
 
-> 访问 ip:1999
+> 访问 127.0.0.1:1999
 
 
 #### 相关说明
