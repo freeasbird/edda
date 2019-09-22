@@ -20,7 +20,7 @@ var (
 )
 
 func args() {
-	flag.StringVar(&ConfFilePath, "f", "config.json", "CFG file path.")
+	flag.StringVar(&ConfFilePath, "f", "edda.json", "CFG file path.")
 	flag.Parse()
 }
 

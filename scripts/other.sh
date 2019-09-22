@@ -8,7 +8,7 @@ use edda
 db.createUser({user:"edda",pwd:"edda",roles:[{role:"dbOwner",db:"edda"}]})
 配置文件添加 auth=true 重启mongodb
 use edda
-db.auth("demo1","demo1") # 返回1
+db.auth("edda","edda") # 返回1
 
 
 # 删除某个集合

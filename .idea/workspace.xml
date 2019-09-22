@@ -2,36 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1e260136-cf08-4353-8009-57b9ba0696c1" name="默认更改列表" comment="">
-      <change beforePath="$PROJECT_DIR$/asset/asset.go" beforeDir="false" afterPath="$PROJECT_DIR$/asset/asset.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/api.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/api.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/edda.service" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/mongodb.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/mongodb.service" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/edda.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eddamain/init.go" beforeDir="false" afterPath="$PROJECT_DIR$/eddamain/init.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eddamain/main.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/eddamain/web.go" beforeDir="false" afterPath="$PROJECT_DIR$/eddamain/web.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logic/app.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/app.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logic/common.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/common.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logic/customer.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/customer.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logic/license.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/license.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logic/node.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/node.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logic/serial.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/serial.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/license.go" beforeDir="false" afterPath="$PROJECT_DIR$/model/license.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/endecrypt/endeaes/AES-CBC-PKCS7.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/endecrypt/endeaes/AES-CFM.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/endecrypt/endeaes/AES-CRT.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/endecrypt/endeaes/AES-GCM.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/endecrypt/endeaes/this_test.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/endecrypt/endeaesrsa/en_de_aes_rsa.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/endecrypt/endeaesrsa/this_test.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/endecrypt/endersa/endersa.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/endecrypt/endersa/rsa.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/endecrypt/endersa/rsa_ext.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/endecrypt/endersa/this_test.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/endecrypt/key.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/hardware/hardware.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/qrcode/qrcode.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/tools/tools.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/back.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/install.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/install.sh" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -50,10 +28,18 @@
     <property name="configurable.Project.GOPATH.is.expanded" value="true" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/scripts" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="com.goide.configuration.GoLibrariesConfigurableProvider" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\go\src\github.com\offer365\edda\scripts" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\go\src\github.com\offer365\edda\scripts" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">

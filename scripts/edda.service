@@ -1,0 +1,15 @@
+[Unit]
+Description=edda server daemon
+After=network.target
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=/home/admin/edda/edda -f /home/admin/edda/edda.json
+WorkingDirectory=/home/admin/edda
+ExecStop=kill -9 $MAINPID
+
+[Install]
+Alias=edda
+WantedBy=multi-user.target
+
