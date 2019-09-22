@@ -1,10 +1,9 @@
 package logic
 
 import (
-	"../model"
 	"context"
 	"encoding/json"
-	"fmt"
+	"github.com/offer365/edda/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -43,7 +42,6 @@ func InsertApp(coll string, body io.Reader) (id string, err error) {
 	if err != nil {
 		return
 	}
-	fmt.Println(string(byt))
 	instance := new(model.APPs)
 	err = json.Unmarshal(byt, instance)
 	if err != nil {

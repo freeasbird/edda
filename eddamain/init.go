@@ -1,10 +1,10 @@
 package eddamain
 
 import (
-	"../asset"
-	"../config"
-	"../logic"
 	"flag"
+	"github.com/offer365/edda/asset"
+	"github.com/offer365/edda/config"
+	"github.com/offer365/edda/logic"
 	log "github.com/sirupsen/logrus"
 	"os"
 	"path/filepath"
@@ -33,7 +33,7 @@ func RestoreAsset() {
 		AssetPath = "./"
 	}
 	// go get -u github.com/jteeuwen/go-bindata/...
-	// 重新生成静态资源在项目的根目录下 go-bindata -o=asset/asset.go -pkg=asset html/... static/...
+	// 重新生成静态资源在项目的根目录下 go-bindata -o=asset/asset.go -pkg=asset views/... static/...
 	dirs := []string{"views", "static"}
 	for _, dir := range dirs {
 		if err := asset.RestoreAssets(AssetPath, dir); err != nil {
@@ -46,7 +46,7 @@ func RestoreAsset() {
 
 func init() {
 	args()
-	//RestoreAsset()
+	RestoreAsset()
 	log.SetFormatter(&log.JSONFormatter{})
 	debug = true
 	if debug {

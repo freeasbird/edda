@@ -1,11 +1,11 @@
 package eddamain
 
 import (
-	"../config"
-	"../controller"
 	"crypto/rand"
 	"crypto/tls"
 	"github.com/gin-gonic/gin"
+	"github.com/offer365/edda/config"
+	"github.com/offer365/edda/controller"
 	log "github.com/sirupsen/logrus"
 	"net/http"
 	"time"

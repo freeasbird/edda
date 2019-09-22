@@ -100,21 +100,3 @@ func NewAPP(key string, name string, expired string, instances int64, attr map[s
 	app.Attr = attr
 	return
 }
-
-//func Demo(serial string, instance int64) string {
-//	sn, err := Decrypt(serial)
-//	fmt.Println(err)
-//	custom := make(map[string]int)
-//	custom["word"] = 100
-//	custom["model"] = 100
-//	custom["class"] = 1000
-//	md5 := make(map[string]string)
-//	for _, node := range sn.Nodes {
-//		md5[node.Name] = node.Attr.HwMd5
-//	}
-//	app1 := NewAPP("demo1", "demo1", "2019-08-07", instance, custom)
-//	app2 := NewAPP("demo2", "demo2", "2019-08-07", instance, custom)
-//	app3 := NewAPP("demo3", "demo3", "2019-08-07", instance, custom)
-//	lic, _ := NewLicense(sn.Sid, md5, app1, app2, app3)
-//	return lic.CipherText()
-//}

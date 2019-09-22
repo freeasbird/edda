@@ -1,10 +1,10 @@
 package controller
 
 import (
-	"../config"
-	"../logic"
 	"encoding/base64"
 	"github.com/gin-gonic/gin"
+	"github.com/offer365/edda/config"
+	"github.com/offer365/edda/logic"
 	"go.mongodb.org/mongo-driver/bson"
 	"strconv"
 	"strings"

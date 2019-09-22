@@ -1,10 +1,9 @@
 package logic
 
 import (
-	"../model"
 	"context"
 	"encoding/json"
-	"fmt"
+	"github.com/offer365/edda/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -57,11 +56,9 @@ func InsertLicense(coll string, body io.Reader) (id string, err error) {
 	if err != nil {
 		return
 	}
-	fmt.Println(string(byt))
 	res := new(Result)
 	res.Apps = make(map[string]App, 0)
 	err = json.Unmarshal(byt, res)
-	fmt.Println(err)
 	if err != nil {
 		return
 	}
@@ -83,7 +80,6 @@ func InsertLicense(coll string, body io.Reader) (id string, err error) {
 	lic.Customer = res.Customer
 	lic.Project = res.Project
 	byt, err = json.Marshal(lic)
-	fmt.Println(string(byt))
 	return device.Insert(coll, lic)
 }
 

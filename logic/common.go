@@ -1,10 +1,9 @@
 package logic
 
 import (
-	"../dao"
 	"context"
 	"encoding/json"
-	"fmt"
+	"github.com/offer365/edda/dao"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"io"
@@ -35,7 +34,6 @@ func Update(coll string, id string, body io.Reader) (err error) {
 	if err != nil {
 		return
 	}
-	fmt.Println(string(byt))
 	data := make(map[string]interface{}, 0)
 	err = json.Unmarshal(byt, &data)
 	if err != nil {

@@ -1,9 +1,9 @@
 package logic
 
 import (
-	"../model"
 	"context"
 	"encoding/json"
+	"github.com/offer365/edda/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
