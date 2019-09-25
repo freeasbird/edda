@@ -80,7 +80,13 @@ func InsertLicense(coll string, body io.Reader) (id string, err error) {
 	lic.Customer = res.Customer
 	lic.Project = res.Project
 	byt, err = json.Marshal(lic)
-	return device.Insert(coll, lic)
+	id, err = device.Insert(coll, lic)
+	for _, node := range sn.Nodes {
+		if err == nil {
+			_, err = device.Insert("nodes", node)
+		}
+	}
+	return
 }
 
 func Aggregation(coll string, id string, skip, limit int64) (data interface{}, err error) {

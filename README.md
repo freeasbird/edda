@@ -10,20 +10,10 @@
 #### 安装edda
 
 ```
-cd /home/admin
-git clone git@github.com:offer365/edda.git
-wget https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel70-3.6.5.tgz
-tar xf mongodb-linux-x86_64-rhel70-3.6.5.tgz -C /home/admin/
-mv /home/admin/mongodb-linux* /home/admin/mongodb
-mkdir -p /home/admin/mongodb/{conf,db,logs}
-cp scripts/mongodb.conf /home/admin/mongodb/conf/
-cp scripts/mongodb.service /usr/lib/systemd/system/
-echo "never" > /sys/kernel/mm/transparent_hugepage/enabled
-echo "never" > /sys/kernel/mm/transparent_hugepage/defrag
-systemctl enable mongodb
-systemctl start mongodb
-
-./mongodb/bin/mongo
+unzip edda-v1.0-linux-amd64.zip
+cd edda
+sh install.sh
+/home/admin/mongodb/bin/mongo
 # 非auth 模式下创建用户
 use admin
 db.createUser({user:"admin",pwd:"eddaedda",roles:["root"]})
@@ -31,18 +21,15 @@ use edda
 db.createUser({user:"edda",pwd:"edda",roles:[{role:"dbOwner",db:"edda"}]})
 exit
 # 配置文件添加 auth=true 重启mongodb
-echo "auth=true" >> ./mongodb/conf/mongodb.conf
+echo "auth=true" >> /home/admin/mongodb/conf/mongodb.conf
 systemctl restart mongodb
 # use edda
 # db.auth("edda","edda") # 返回1
 
-cd edda;go build
-cp scripts/edda.service /usr/lib/systemd/system/
-systemctl enable edda
 systemctl start edda
 ```
 
-> 访问 127.0.0.1:1999
+> 访问 http://127.0.0.1:1999
 
 
 #### 相关说明

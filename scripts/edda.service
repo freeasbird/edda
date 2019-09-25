@@ -5,8 +5,8 @@ After=network.target
 [Service]
 Type=simple
 Restart=always
-ExecStart=/home/admin/edda/edda -f /home/admin/edda/edda.json
-WorkingDirectory=/home/admin/edda
+ExecStart=PATH/edda -f PATH/edda.json
+WorkingDirectory=PATH
 ExecStop=kill -9 $MAINPID
 
 [Install]
