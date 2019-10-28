@@ -45,11 +45,13 @@
             <ul class="nav nav-stacked" role="tablist" id="leftTabs">
                 <li role="presentation" class="active"><a href="#create-license" aria-controls="create-license"
                                                           role="tab" data-toggle="tab"
-                                                          onClick="CreateLicense()">新建授权</a></li>
+                                                          onClick="GetAllAPP()">新建授权</a></li>
                 <li role="presentation"><a href="#app-manager" aria-controls="app-manager" role="tab"
                                            data-toggle="tab" onClick="GetAppList(1)">应用管理</a></li>
                 <li role="presentation"><a href="#license-list" aria-controls="license-list" role="tab"
                                            data-toggle="tab" onClick="GetLicenseList(1)">授权历史</a></li>
+                <li role="presentation"><a href="#untied-app" aria-controls="untied-app" role="tab"
+                                           data-toggle="tab">解绑应用</a></li>
             </ul>
         </div>
         <!--  标签页 -->
@@ -58,14 +60,14 @@
                 <!--新建授权-->
                 <div role="tabpanel" class="tab-pane active" id="create-license">
                     <div class="row container-fluid" style="margin-top: 1%">
-                        <!--解析授权-->
-                        <div class="col-md-11">
+                        <!--新建-->
+                        <div class="col-md-11" id="create-license">
                             <div class="panel panel-default middle-center file">
                                 <div class="panel-heading">
-                                    <h5 class="panel-title">解析序列号</h5>
+                                    <h5 class="panel-title">新建授权</h5>
                                 </div>
+
                                 <div class="panel-body">
-                                    <h4>序列号</h4>
                                     <form>
                                         <div class="form-group">
                                             <textarea name="serial-num" cols="40" rows="10" placeholder="序列号"
@@ -73,34 +75,7 @@
                                                       id="serial-num"></textarea>
                                         </div>
                                     </form>
-                                    <input type="button" class="btn btn-primary" onClick="ResolveSerial()" name="解析"
-                                           value="解析" id="resolve-serial"></input>
-                                </div>
-                            </div>
-                            <!-- 新建授权 -->
-                        </div>
-                        <!--新建-->
-                        <div class="col-md-11">
-                            <div class="panel panel-default middle-center file">
-                                <div class="panel-heading">
-                                    <h5 class="panel-title">新建授权</h5>
-                                </div>
-                                <div class="panel-body">
                                     <form class="form-horizontal" id="license-form">
-                                        <div class="form-group">
-                                            <label for="license-customer" class="col-sm-1 control-label">客户</label>
-                                            <div class="col-sm-11">
-                                                <input type="text" class="form-control" id="license-customer"
-                                                       placeholder="客户">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="license-project" class="col-sm-1 control-label">项目</label>
-                                            <div class="col-sm-11">
-                                                <input type="text" class="form-control" id="license-project"
-                                                       placeholder="项目">
-                                            </div>
-                                        </div>
                                         <div id="license-apps"></div>
                                     </form>
                                     <div class="form-group">
@@ -112,6 +87,13 @@
                                 </div>
                             </div>
                             <!-- 新建授权 -->
+                            <form>
+                                <div class="form-group">
+                                            <textarea name="serial-num" cols="40" rows="10" placeholder="激活码"
+                                                      maxlength="40960" class="form-control" required
+                                                      id="license"></textarea>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div><!--新建授权-->
@@ -133,7 +115,6 @@
                                 <tr>
                                     <th><span>APP</span></th>
                                     <th><span>KEY</span></th>
-                                    <th><span>简介</span></th>
                                     <th><span>操作</span></th>
                                 </tr>
                                 </thead>
@@ -155,8 +136,6 @@
                             <table class="table table-bordered table-hover" style="min-height:42em">
                                 <thead class="table-thead">
                                 <tr>
-                                    <th><span>客户</span></th>
-                                    <th><span>项目</span></th>
                                     <th><span>生成时间</span></th>
                                     <th><span>操作</span></th>
                                 </tr>
@@ -172,11 +151,38 @@
                         </div>
                     </div>
                 </div><!--授权历史-->
+                <!--解绑-->
+                <div role="tabpanel" class="tab-pane" id="untied-app">
+                    <div class="row container-fluid" style="margin-top: 1%">
+                        <div class="col-md-11">
+                            <div class="panel panel-default middle-center file">
+                                <div class="panel-heading">
+                                    <h5 class="panel-title">解除绑定</h5>
+                                </div>
+                                <div class="panel-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="untied-id">应用/ID</label>
+                                            <input type="text" class="form-control" id="untied-id" placeholder="eg:nlp/app01">
+                                        </div>
+                                        <div class="form-group">
+                                            <textarea name="serial-num" cols="2" rows="10" placeholder="解绑码"
+                                                      maxlength="4096" class="form-control" required
+                                                      id="untied-code"></textarea>
+                                        </div>
+                                    </form>
+                                    <input type="button" class="btn btn-primary" onClick="UntiedApp()" name="解绑"
+                                           value="解绑" id="resolve-serial"></input>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--解绑-->
             </div>
         </div>
     </div>
 
-    <!-- 解析结果模态框 -->
+    <!-- 解析结果模态框
     <div id="resolve-result-modal" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -187,15 +193,14 @@
                 </div>
                 <div class="modal-body">
                     <div id="resolve-result" class="alert" role="alert"></div>
-                    <!-- <div id="license-result" class="alert alert-danger" role="alert">..8888.</div> -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭
                     </button>
                 </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div>
+            </div>
+        </div>
+    </div>-->
 
     <!--  登录模态框 -->
     <div id="login-modal" class="modal fade" tabindex="-1" role="dialog">
@@ -234,7 +239,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">新建应用</h4>
+                    <h4 class="modal-title">新建/编辑应用</h4>
                 </div>
                 <div class="modal-body">
                     <form>
@@ -248,11 +253,6 @@
                             <label for="edit-app-key">应用KEY</label>
                             <input type="text" class="form-control" id="edit-app-key"
                                    placeholder="应用KEY">
-                        </div>
-                        <div class="form-group">
-                            <label for="edit-app-introduction">应用简介</label>
-                            <input type="text" class="form-control" id="edit-app-introduction"
-                                   placeholder="应用简介">
                         </div>
                         <div>
                             <h5>应用属性</h5>
@@ -297,16 +297,6 @@
                 <div class="modal-body">
                     <form>
                         <input type='hidden' id="detail-license-id">
-                        <div class="form-group">
-                            <label for="detail-license-customer">客户</label>
-                            <input type="text" class="form-control" id="detail-license-customer"
-                                   placeholder="客户">
-                        </div>
-                        <div class="form-group">
-                            <label for="detail-license-project">项目</label>
-                            <input type="text" class="form-control" id="detail-license-project"
-                                   placeholder="项目">
-                        </div>
                         <div class="form-group">
                             <label for="detail-license-generation">授权时间</label>
                             <input type="text" class="form-control" id="detail-license-generation"
@@ -407,13 +397,12 @@
                 success: function (resp) {
                     $("#app-list").empty();
                     for (let i = 0; i < resp.data.length; ++i) {
-                        let lic = resp.data[i];
+                        let app = resp.data[i];
                         let tr = $('<tr></tr>');
-                        tr.append($('<td></td>').html(lic.name));
-                        tr.append($('<td></td>').html(lic.key));
-                        tr.append($('<td></td>').html(lic.introduction));
+                        tr.append($('<td></td>').html(app.name));
+                        tr.append($('<td></td>').html(app.key));
                         tr.append($('<td><a class="opt-btn btn text-primary" href="javascript:void(0)" onClick="EditApp($(this))">编辑</a><a class="opt-btn btn text-primary" href="javascript:void(0)" onClick="DelApp($(this))">删除</a></td>'));
-                        tr.append($("<input type='hidden'>").val(lic.id));
+                        tr.append($("<input type='hidden'>").val(app.id));
                         $("#app-list").append(tr)
                     }
                 }
@@ -432,10 +421,9 @@
                 success: function (resp) {
                     method = "POST"; // 更改SaveApp的请求方法为POST
                     $('#app-modal').modal("show");
-                    let obj = resp.data[0];
+                    let obj = resp.data;
                     $('#edit-app-name').val(obj.name);
                     $('#edit-app-key').val(obj.key);
-                    $('#edit-app-introduction').val(obj.introduction);
                     $('#edit-app-id').val(id);
                     let warp = $('#app-attr-warp');
                     warp.empty();
@@ -473,7 +461,6 @@
             $('#app-modal').modal("show");
             $('#edit-app-name').val("");
             $('#edit-app-key').val("");
-            $('#edit-app-introduction').val("");
             $('#edit-app-attr0-name').val("");
             $('#edit-app-attr0-key').val("");
             $("#app-attr-warp .app-append-attr").remove();
@@ -495,7 +482,6 @@
                 data: JSON.stringify({
                     "name": $('#edit-app-name').val(),
                     "key": $('#edit-app-key').val(),
-                    "introduction": $("#edit-app-introduction").val(),
                     "attrs": GetAttrs($('#app-attr-warp').find(".app-attr")),
                 }),
                 success: function (resp) {
@@ -549,12 +535,15 @@
                 username: $.cookie(cookie_username_key),
                 password: $.cookie(cookie_password_key),
                 dataType: "json",
-                processData: false,
-                headers: {'Content-Type': 'application/json'},
+                // processData: false,
+                // headers: {'Content-Type': 'application/json'},
                 // ajax 传body的方法
-                data: JSON.stringify({
-                    "code": $('#serial-num').val(),
-                }),
+                // data: JSON.stringify({
+                //     code: $('#serial-num').val(),
+                // }),
+                data: {
+                    code: $('#serial-num').val(),
+                },
                 success: function (resp) {
                     if (resp.code == 200) {
                         $("#resolve-result-modal").modal("show");
@@ -564,8 +553,8 @@
                             let msg = $("<p></p>").html(resp.data[i]);
                             warp.append(msg)
                         }
-                        $('#license-customer').val("");
-                        $('#license-project').val("");
+                        // $('#license-customer').val("");
+                        // $('#license-project').val("");
                         // $('#app-modal').modal("hide");
                         // $("#license-create").removeClass("active");
                         // $('#license-table').addClass("active");
@@ -623,15 +612,13 @@
                 headers: {'Content-Type': 'application/json'},
                 // ajax 传body的方法
                 data: JSON.stringify({
-                    "customer": $('#license-customer').val(),
-                    "project": $('#license-project').val(),
                     "serial_num": $("#serial-num").val(),
                     "apps": GetInputApps(),
                 }),
                 success: function (resp) {
                     if (resp.code == 200) {
-                        $('#app-modal').modal("hide");
-                        $("#license-apps").empty();
+                        $('#license').val(resp.data);
+                        // $("#license-apps").empty();
                         // $("#license-create").removeClass("active");
                         // $('#license-table').addClass("active");
                         // $('#license-list-edit').hide();
@@ -642,10 +629,6 @@
             })
         }
 
-        function CreateLicense() {
-
-        }
-
         function GetInputApps() {
             let apps = {};
             $('#license-apps').find(".license-app").each(function () {
@@ -653,14 +636,20 @@
                 let app_key = $(this).find("input").eq(0).val();
                 app["name"] = $(this).find('h4').html();
                 let exp = $(this).find("input[type='date']").val();
-                app["expire_time"] = exp;
+                let timestamp = new Date(exp).getTime()/1000;
+                app["expire"] = timestamp;
                 let ins = parseInt($(this).find("input").eq(2).val());
                 app["instance"] = ins;
-                app.attr = {};
+                app.attrs = new Array();
                 $(this).find("div.form-app-attr").each(function () {
+                    let attr={};
                     let key = $(this).find("input").eq(0).val();
+                    let name =$(this).find("label").eq(0).html();
                     let val = parseInt($(this).find("input").eq(1).val());
-                    app.attr[key] = val
+                    attr["key"] = key;
+                    attr["name"] = name;
+                    attr["value"] = val;
+                    app.attrs.push(attr)
                 });
                 if (ins > 0 && exp != "") {
                     apps[app_key] = app
@@ -717,8 +706,6 @@
                 success: function (resp) {
                     $('#license-modal').modal("show");
                     let obj = resp.data[0];
-                    $('#detail-license-customer').val(obj.customer);
-                    $('#detail-license-project').val(obj.project);
                     $('#detail-license-generation').val(obj.generation_time);
                     $('#detail-license-id').val(id);
                     let warp = $('#license-apps-warp');
@@ -765,14 +752,27 @@
                         let lic = resp.data[i];
                         // console.log(lic)
                         let tr = $('<tr></tr>');
-                        tr.append($('<td></td>').html(lic.customer));
-                        tr.append($('<td></td>').html(lic.project));
-                        tr.append($('<td></td>').html(formatTime(lic.generation_time)));
-                        tr.append($('<td><a class="opt-btn btn text-primary" href="javascript:void(0)" onClick="DetailLicense($(this))">详情</a><a class="opt-btn btn text-primary" href="javascript:void(0)" onClick="CopyCipher($(this))">复制</a></td>'));
+                        tr.append($('<td></td>').html(formatTime(lic.generate)));
+                        let href=base_url+"/cipher/"+lic.id;
+                        tr.append($('<td><a class="opt-btn btn text-primary" href="javascript:void(0)" onClick="DetailLicense($(this))">详情</a><a class="opt-btn btn text-primary" href="javascript:void(0)" onClick="CopyCipher($(this))">复制</a><a class="opt-btn btn text-primary" href='+href+'>下载</a></td>'));
                         tr.append($("<input type='hidden'>").val(lic.id));
-                        tr.append($("<input type='hidden' class='cipher'>").val(lic.cipher));
                         $("#license-list-body").append(tr)
                     }
+                }
+            });
+        }
+
+        // 解绑应用
+        function UntiedApp() {
+            let id=$("#untied-id").val();
+            $.ajax({
+                url: base_url + "/untied/"+id,
+                type: "GET",
+                username: $.cookie(cookie_username_key),
+                password: $.cookie(cookie_password_key),
+                dataType: "json",
+                success: function (resp) {
+                    $("#untied-code").val(resp.code);
                 }
             });
         }
@@ -797,7 +797,7 @@
         }
 
         function formatTime(obj) {
-            let data = new Date(obj);
+            let data = new Date(obj*1000);
             let year = data.getFullYear();  //获取年
             let month = data.getMonth() + 1;    //获取月
             let day = data.getDate(); //获取日
@@ -805,7 +805,7 @@
             let minutes = data.getMinutes();
             let seconds = data.getSeconds();
             // return year + "年" + month + "月" + day + "日" + " " + hours + ":" + minutes + ":" + seconds;
-            return year + "年" + month + "月" + day + "日";
+            return year + "年" + month + "月" + day + "日" + " " + hours + ":" + minutes + ":" + seconds;
         }
 
         // 登录
@@ -857,8 +857,7 @@
                 $("#leftTabs a").eq(0).css({"background-color": "#10ffd0"});
                 // CreateLicense()
             }
-            $('#license-customer').val("");
-            $('#license-project').val("");
+            GetAllAPP()
             // 登录
             $("#login").on("click", Login);
             // 切换标签

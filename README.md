@@ -3,8 +3,9 @@
 ----
 
 ## what this? ##
-- edda 用于给 [odin](https://github.com/offer365/odin) 生成授权码。 
+- 这个项目仅仅是给 [odin](https://github.com/offer365/odin) 生成授权码。 
 - 使用mongodb存储数据。
+- eddacore 使用gRpc 实现了核心的功能，用户可以基于这些功能实现自己客户管理。
 
 ## 安装运行 ##
 #### 安装edda

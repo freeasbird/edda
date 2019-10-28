@@ -1,5 +1,6 @@
 {
   "port": "1999",
+  "core": "127.0.0.1:19527",
   "mongodb": {
     "host": "127.0.0.1",
     "port": "27017",
@@ -8,7 +9,6 @@
     "database": "edda",
     "collections": [
       "apps",
-      "customers",
       "licenses",
       "serials",
       "nodes"

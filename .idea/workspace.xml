@@ -2,12 +2,34 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1e260136-cf08-4353-8009-57b9ba0696c1" name="默认更改列表" comment="">
+      <change afterPath="$PROJECT_DIR$/eddacore/main.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eddacore/proto/core.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eddacore/proto/edda.core.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/edda.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/edda.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api.md" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/asset/asset.go" beforeDir="false" afterPath="$PROJECT_DIR$/asset/asset.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/conf.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/conf.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/api.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/api.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dao/dao.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dao/mongodb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/edda.json" beforeDir="false" afterPath="$PROJECT_DIR$/edda.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eddamain/init.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/eddamain/web.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/app.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/app.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/common.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/common.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/customer.go" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/logic/license.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/license.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/edda.service" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/edda.service" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/node.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/serial.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/serial.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/license.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/model.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/model_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/node.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/serial.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/show.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/index.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,12 +37,21 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+        <option value="Go Application" />
+      </list>
+    </option>
+  </component>
   <component name="GOROOT" path="D:\Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1RBzrqQ9UOSgsJS13oQ6FqPwD8Z" />
   <component name="PropertiesComponent">
+    <property name="DefaultGoTemplateProperty" value="Go Application" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="configurable.Global.GOPATH.is.expanded" value="true" />
     <property name="configurable.Project.GOPATH.is.expanded" value="true" />
@@ -32,10 +63,11 @@
     <property name="settings.editor.selected.configurable" value="com.goide.configuration.GoLibrariesConfigurableProvider" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
+    <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Administrator\go\src\github.com\offer365\edda\scripts" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\go\src\github.com\offer365\edda\eddaCore" />
       <recent name="C:\Users\Administrator\go\src\github.com\offer365\edda\scripts" />
     </key>
   </component>
@@ -51,7 +83,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Go Build.go build github.com/offer365/edda (1)">
+  <component name="RunManager" selected="Go Build.go build github.com/offer365/edda/eddacore">
     <configuration name="go build github.com/offer365/edda (1)" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="edda" />
       <working_directory value="$PROJECT_DIR$/" />
@@ -69,13 +101,24 @@
       <directory value="$PROJECT_DIR$" />
       <method v="2" />
     </configuration>
+    <configuration name="go build github.com/offer365/edda/eddacore" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="edda" />
+      <working_directory value="$PROJECT_DIR$/" />
+      <kind value="PACKAGE" />
+      <filePath value="$PROJECT_DIR$/eddacore/main.go" />
+      <package value="github.com/offer365/edda/eddacore" />
+      <directory value="$PROJECT_DIR$/" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Go Build.go build github.com/offer365/edda" />
       <item itemvalue="Go Build.go build github.com/offer365/edda (1)" />
+      <item itemvalue="Go Build.go build github.com/offer365/edda/eddacore" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Go Build.go build github.com/offer365/edda (1)" />
+        <item itemvalue="Go Build.go build github.com/offer365/edda/eddacore" />
         <item itemvalue="Go Build.go build github.com/offer365/edda" />
       </list>
     </recent_temporary>

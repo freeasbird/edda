@@ -2,19 +2,31 @@ package config
 
 import (
 	"encoding/json"
+	"flag"
 	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 )
 
-var CFG *Configuration
+var (
+	cfg string
+	Cfg *Configuration
+)
+func args() {
+	flag.StringVar(&cfg, "f", "edda.json", "Cfg file path.")
+	flag.Parse()
+}
 
 func init() {
-	CFG = new(Configuration)
-	CFG.Users = make(map[string]string, 0)
+	args()
+	Cfg = new(Configuration)
+	Cfg.Users = make(map[string]string, 0)
+	Cfg.LoadConfig(cfg)
 }
+
 
 type Configuration struct {
 	Port    string            `json:"port"`
+	Core   string `json:"core"`
 	MongoDB MongoDB           `json:"mongodb"`
 	Users   map[string]string `json:"users"`
 }
@@ -45,6 +57,7 @@ func (cfg *Configuration) LoadConfig(filename string) {
 	return
 ERR:
 	cfg.Port = "1999"
+	cfg.Core="127.0.0.1:19527"
 	cfg.MongoDB.Host = "127.0.0.1"
 	cfg.MongoDB.Port = "27017"
 	cfg.MongoDB.User = "admin"
