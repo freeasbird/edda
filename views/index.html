@@ -387,7 +387,7 @@
 
         // 应用列表
         function GetAppList(page) {
-            CountApp(page);
+            // CountApp(page);
             $.ajax({
                 url: base_url + "/app/" + "?page=" + page + "&size=" + size,
                 type: "GET",
@@ -603,8 +603,8 @@
 
         function SaveLicense() {
             $.ajax({
-                url: base_url + "/license/",
-                type: "PUT",
+                url: base_url + "/license",
+                type: "POST",
                 username: $.cookie(cookie_username_key),
                 password: $.cookie(cookie_password_key),
                 dataType: "json",
@@ -617,6 +617,8 @@
                 }),
                 success: function (resp) {
                     if (resp.code == 200) {
+                        console.log(resp)
+                        console.log(resp.data)
                         $('#license').val(resp.data);
                         // $("#license-apps").empty();
                         // $("#license-create").removeClass("active");
@@ -851,12 +853,7 @@
         }
 
         $(document).ready(function () {
-            if ($.cookie(cookie_key) == null) {
-                $("#login-modal").modal("show")
-            } else {
-                $("#leftTabs a").eq(0).css({"background-color": "#10ffd0"});
-                // CreateLicense()
-            }
+
             GetAllAPP()
             // 登录
             $("#login").on("click", Login);

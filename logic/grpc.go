@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/offer365/edda/config"
-	pb "github.com/offer365/eddacore/proto"
+	pb "github.com/offer365/edda/proto"
 	corec "github.com/offer365/example/grpc/core/client"
 	"google.golang.org/grpc"
 )

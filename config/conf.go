@@ -28,18 +28,10 @@ func init() {
 type Configuration struct {
 	Port    string            `json:"port"`
 	Core    string            `json:"core"`
-	MongoDB MongoDB           `json:"mongodb"`
 	Users   map[string]string `json:"users"`
 }
 
-type MongoDB struct {
-	Host        string   `json:"host"`
-	Port        string   `json:"port"`
-	User        string   `json:"user"`
-	Pwd         string   `json:"pwd"`
-	Database    string   `json:"database"`
-	Collections []string `json:"collections"`
-}
+
 
 func (cfg *Configuration) LoadConfig(filename string) {
 	var (
@@ -58,13 +50,6 @@ func (cfg *Configuration) LoadConfig(filename string) {
 	return
 ERR:
 	cfg.Port = "1999"
-	cfg.Core = "127.0.0.1:19527"
-	cfg.MongoDB.Host = "127.0.0.1"
-	cfg.MongoDB.Port = "27017"
-	cfg.MongoDB.User = "admin"
-	cfg.MongoDB.Pwd = "666666"
-	cfg.MongoDB.Database = "products"
-	cfg.MongoDB.Collections = []string{"principals", "projects", "copyrights", "products"}
 	log.Error("failed to load configuration file. error:", err.Error())
 	return
 }
