@@ -3,20 +3,20 @@ package logic
 import (
 	"context"
 	"encoding/json"
-	pb "github.com/offer365/edda/eddacore/proto"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
 	"io"
 	"io/ioutil"
 	"time"
+
+	pb "github.com/offer365/eddacore/proto"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type Result struct {
-	SerialNum string         `json:"serial_num"`
+	SerialNum string             `json:"serial_num"`
 	Apps      map[string]*pb.App `json:"apps"`
 }
-
 
 func FindOneLicense(coll string, id string) (instances []*pb.License, err error) {
 	oid, err := primitive.ObjectIDFromHex(id)
@@ -43,7 +43,7 @@ func FindLicense(coll string, filter interface{}, skip, limit int64) (instances 
 	return
 }
 
-func InsertLicense(coll string, body io.Reader) (cipher,id string, err error) {
+func InsertLicense(coll string, body io.Reader) (cipher, id string, err error) {
 	byt, err := ioutil.ReadAll(body)
 	if err != nil {
 		return
@@ -54,44 +54,44 @@ func InsertLicense(coll string, body io.Reader) (cipher,id string, err error) {
 	if err != nil {
 		return
 	}
-	//if byt,err=base64.StdEncoding.DecodeString(res.SerialNum);err!=nil{
+	// if byt,err=base64.StdEncoding.DecodeString(res.SerialNum);err!=nil{
 	//	return
-	//}
-	//if byt,err=endecrypt.Decrypt(endecrypt.Pri1AesRsa2048,byt);err!=nil{
+	// }
+	// if byt,err=endecrypt.Decrypt(endecrypt.Pri1AesRsa2048,byt);err!=nil{
 	//	return
-	//}
+	// }
 	//
-	//sn:=new(pb.SerialNum)
-	//if err=json.Unmarshal(byt,sn);err!=nil{
+	// sn:=new(pb.SerialNum)
+	// if err=json.Unmarshal(byt,sn);err!=nil{
 	//	return
-	//}
-	//dev := make(map[string]string)
-	//for k, v := range sn.Nodes {
+	// }
+	// dev := make(map[string]string)
+	// for k, v := range sn.Nodes {
 	//	dev[k] = v.Attrs.Hwmd5
 	//	fmt.Println(v.Attrs.Hwmd5)
-	//}
+	// }
 
 	apps := make(map[string]*pb.App, 0)
 	for key, app := range res.Apps {
-		app.Key=key
-		app.MaxLifeCycle=(app.Expire - time.Now().Unix())/60
-		apps[key]=app
+		app.Key = key
+		app.MaxLifeCycle = (app.Expire - time.Now().Unix()) / 60
+		apps[key] = app
 	}
-	req:=pb.AuthReq{
-		Cipher:               &pb.Cipher{Code:res.SerialNum},
-		Apps:                 apps,
+	req := pb.AuthReq{
+		Cipher: &pb.Cipher{Code: res.SerialNum},
+		Apps:   apps,
 	}
-	resp,err:=pb.Auth.Authorized(context.TODO(),&req)
-	if err!=nil{
+	resp, err := pb.Auth.Authorized(context.TODO(), &req)
+	if err != nil {
 		return
 	}
-	//lic.ID = primitive.NewObjectID()
+	// lic.ID = primitive.NewObjectID()
 	id, err = db.Insert(coll, resp.Lic)
-	cipher=resp.Cipher.Code
+	cipher = resp.Cipher.Code
 	return
 }
 
-//func Aggregation(coll string, id string, skip, limit int64) (data interface{}, err error) {
+// func Aggregation(coll string, id string, skip, limit int64) (data interface{}, err error) {
 //	var pipe mongo.Pipeline
 //	//{"$limit",limit},
 //	//{"$skip",skip},
@@ -157,4 +157,4 @@ func InsertLicense(coll string, body io.Reader) (cipher,id string, err error) {
 //
 //	err = db.Aggregation(coll, pipe, fu)
 //	return instances, err
-//}
+// }

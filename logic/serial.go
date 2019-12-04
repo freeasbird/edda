@@ -3,13 +3,14 @@ package logic
 import (
 	"context"
 	"encoding/json"
-	pb "github.com/offer365/edda/eddacore/proto"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
 	"io"
 	"io/ioutil"
 	"time"
+
+	pb "github.com/offer365/eddacore/proto"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 func FindOneSerial(coll string, id string) (instances []*pb.SerialNum, err error) {
@@ -47,12 +48,12 @@ func InsertSerial(coll string, body io.Reader) (id string, err error) {
 	if err != nil {
 		return
 	}
-	//instance.ID = primitive.NewObjectID()
+	// instance.ID = primitive.NewObjectID()
 	return db.Insert(coll, instance)
 }
 
 //
-//func ResolveSerial( cipher string ) (msg []string, err error) {
+// func ResolveSerial( cipher string ) (msg []string, err error) {
 //	var (
 //		filter   bson.D
 //		ins      []*pb.Node
@@ -127,4 +128,4 @@ func InsertSerial(coll string, body io.Reader) (id string, err error) {
 //	}
 //	msg = append(msg, "在数据库中找到相似的设备:"+fmt.Sprintf("%d个。", len(devices)))
 //	return
-//}
+// }

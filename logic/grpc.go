@@ -2,8 +2,9 @@ package logic
 
 import (
 	"context"
+
 	"github.com/offer365/edda/config"
-	pb "github.com/offer365/edda/eddacore/proto"
+	pb "github.com/offer365/eddacore/proto"
 	corec "github.com/offer365/example/grpc/core/client"
 	"google.golang.org/grpc"
 )
@@ -12,7 +13,7 @@ var (
 	auth      *Authentication
 	_username = "C205v406x68f5IM7"
 	_password = "c9bJ3v7FQ11681EP"
-	cli pb.AuthorizationClient
+	cli       pb.AuthorizationClient
 )
 
 func init() {

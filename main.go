@@ -3,18 +3,20 @@ package main
 import (
 	"crypto/rand"
 	"crypto/tls"
+
 	"github.com/gin-gonic/gin"
 	"github.com/offer365/edda/asset"
 	"github.com/offer365/edda/config"
 	"github.com/offer365/edda/controller"
 	"github.com/offer365/edda/logic"
 
-	log "github.com/sirupsen/logrus"
 	"net/http"
 	"os"
 	"path/filepath"
 	"runtime"
 	"time"
+
+	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -78,12 +80,10 @@ tNBT2he8EJWiBzyZ31nGwTt/pQ==
 )
 
 var (
-
-	cfg *config.Configuration
+	cfg       *config.Configuration
 	debug     bool
 	AssetPath string
 )
-
 
 // 释放静态资源
 func RestoreAsset() {
@@ -119,13 +119,13 @@ func init() {
 	debug = true
 	collIndex := make(map[string]string, 0)
 	collIndex["apps"] = "name"
-	//collIndex["nodes"] = "attr.md5"
-	//collIndex["licenses"] = "auth.lid"
-	//collIndex["nodes"] = ""
+	// collIndex["nodes"] = "attr.md5"
+	// collIndex["licenses"] = "auth.lid"
+	// collIndex["nodes"] = ""
 	collIndex["licenses"] = ""
-	//collIndex["serial"] = "sid"
+	// collIndex["serial"] = "sid"
 
-	if err := logic.Init(cfg.MongoDB.Host, cfg.MongoDB.Port, cfg.MongoDB.User, cfg.MongoDB.Pwd, cfg.MongoDB.Database, 2*time.Second, collIndex); err != nil {
+	if err := logic.Init(cfg.MongoDB.Host+":"+cfg.MongoDB.Port, cfg.MongoDB.User, cfg.MongoDB.Pwd, cfg.MongoDB.Database, 2*time.Second, collIndex); err != nil {
 		log.Fatal("init error.")
 	}
 }
@@ -142,10 +142,10 @@ func RunWebWithHttps() {
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
-	tlsConfig:=&tls.Config{
-		Certificates:[]tls.Certificate{crt},
-		Time:time.Now,
-		Rand : rand.Reader,
+	tlsConfig := &tls.Config{
+		Certificates: []tls.Certificate{crt},
+		Time:         time.Now,
+		Rand:         rand.Reader,
 	}
 	l, err := tls.Listen("tcp", ":"+config.Cfg.Port, tlsConfig)
 	if err != nil {
@@ -166,7 +166,7 @@ func route() (r *gin.Engine) {
 	} else {
 		gin.SetMode(gin.ReleaseMode) // 生产模式
 		r = gin.New()
-		r.Use(gin.Recovery()) //Recovery 中间件从任何 panic 恢复，如果出现 panic，它会写一个 500 错误。
+		r.Use(gin.Recovery()) // Recovery 中间件从任何 panic 恢复，如果出现 panic，它会写一个 500 错误。
 	}
 	r.LoadHTMLGlob(AssetPath + "views/*")
 
@@ -179,12 +179,12 @@ func route() (r *gin.Engine) {
 	// 应用
 	api.Any("/app/*id", controller.AppAPI)
 	// 生成密文
-	api.GET("/cipher/:lid",controller.CipherAPI)
-	api.GET("/untied/:app/:id",controller.UntiedApi)
+	api.GET("/cipher/:lid", controller.CipherAPI)
+	api.GET("/untied/:app/:id", controller.UntiedApi)
 	api.POST("/auth/login", controller.LoginAPI)
 	api.GET("/count/:coll", controller.CountAPI)
 
-	//r.Use(SimpleSession)
+	// r.Use(SimpleSession)
 	r.Static("/static", AssetPath+"static")
 	r.Any("", func(c *gin.Context) {
 		c.Request.URL.Path = "/index"
@@ -200,7 +200,6 @@ func route() (r *gin.Engine) {
 	r.StaticFile("/favicon.ico", AssetPath+"static/favicon.ico")
 	return
 }
-
 
 func main() {
 	RunWebWithHttp()

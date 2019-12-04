@@ -4,14 +4,15 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/json"
-	"github.com/gin-gonic/gin"
-	"github.com/offer365/edda/config"
-	pb "github.com/offer365/edda/eddacore/proto"
-	"github.com/offer365/edda/logic"
-	"github.com/offer365/endecrypt"
-	"go.mongodb.org/mongo-driver/bson"
 	"strconv"
 	"strings"
+
+	"github.com/gin-gonic/gin"
+	"github.com/offer365/edda/config"
+	"github.com/offer365/edda/logic"
+	pb "github.com/offer365/eddacore/proto"
+	"github.com/offer365/endecrypt"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 var (
@@ -205,14 +206,14 @@ func LicenseAPI(c *gin.Context) {
 		}
 		switch c.Request.Method {
 		case "PUT":
-			cipher,_, err := logic.InsertLicense(collection, c.Request.Body)
+			cipher, _, err := logic.InsertLicense(collection, c.Request.Body)
 			if err != nil {
 				c.JSON(200, gin.H{"code": 404, "msg": err.Error(), "data": nil})
 				return
 			}
-			//c.Header("Content-Type", "text/html; charset=utf-8")
-			//c.Header("Content-Disposition", `attachment; filename="license.txt"`)
-			//c.String(200, cipher)
+			// c.Header("Content-Type", "text/html; charset=utf-8")
+			// c.Header("Content-Disposition", `attachment; filename="license.txt"`)
+			// c.String(200, cipher)
 			c.JSON(200, gin.H{"code": 200, "msg": "success", "data": cipher})
 			return
 		case "GET":
@@ -243,7 +244,7 @@ func LicenseAPI(c *gin.Context) {
 			c.JSON(200, gin.H{"code": 200, "msg": "success", "data": nil})
 			return
 		case "POST":
-			//err := logic.UpdateProduct(collection, id, c.Request.Body)
+			// err := logic.UpdateProduct(collection, id, c.Request.Body)
 			if err != nil {
 				c.JSON(200, gin.H{"code": 404, "msg": err.Error(), "data": nil})
 				return
@@ -259,7 +260,6 @@ func LicenseAPI(c *gin.Context) {
 	}
 }
 
-
 // web登录Api
 func LoginAPI(c *gin.Context) {
 	user := c.MustGet(gin.AuthUserKey).(string)
@@ -268,9 +268,8 @@ func LoginAPI(c *gin.Context) {
 	}
 }
 
-
 // 序列号
-//func SerialAPI(c *gin.Context) {
+// func SerialAPI(c *gin.Context) {
 //	var (
 //		id         string
 //		collection = "projects"
@@ -346,10 +345,9 @@ func LoginAPI(c *gin.Context) {
 //			})
 //		}
 //	}
-//}
+// }
 
-
-//func NodeAPI(c *gin.Context) {
+// func NodeAPI(c *gin.Context) {
 //	var (
 //		id         string
 //		collection = "copyrights"
@@ -424,11 +422,10 @@ func LoginAPI(c *gin.Context) {
 //			})
 //		}
 //	}
-//}
+// }
 
-
-//// 客户
-//func CustomerAPI(c *gin.Context) {
+// // 客户
+// func CustomerAPI(c *gin.Context) {
 //	var (
 //		id         string
 //		collection = "customers"
@@ -515,4 +512,4 @@ func LoginAPI(c *gin.Context) {
 //			})
 //		}
 //	}
-//}
+// }
