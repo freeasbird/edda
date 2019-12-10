@@ -5,9 +5,9 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"errors"
-	"flag"
 
 	"github.com/gin-gonic/gin"
+	"github.com/offer365/edda/logic"
 	pb "github.com/offer365/edda/proto"
 
 	"net"
@@ -68,20 +68,10 @@ func init() {
 var (
 	gs      *grpc.Server
 	secrets = gin.H{"admin": nil}
-	addr    string
 )
 
-func args() {
-	flag.StringVar(&addr, "l", ":19527", "listen addr.")
-	flag.Parse()
-}
-
-func init() {
-	args()
-}
-
 func main() {
-	Run(addr)
+	Run(logic.ListenAddr)
 }
 
 func Run(addr string) {

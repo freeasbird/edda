@@ -2,19 +2,30 @@ package logic
 
 import (
 	"context"
+	"flag"
 
-	"github.com/offer365/edda/config"
 	pb "github.com/offer365/edda/proto"
 	corec "github.com/offer365/example/grpc/core/client"
 	"google.golang.org/grpc"
 )
+
 
 var (
 	auth      *Authentication
 	_username = "C205v406x68f5IM7"
 	_password = "c9bJ3v7FQ11681EP"
 	cli       pb.AuthorizationClient
+	ListenAddr  string
 )
+
+func args() {
+	flag.StringVar(&ListenAddr, "l", ":19527", "listen addr.")
+	flag.Parse()
+}
+
+func init() {
+	args()
+}
 
 func init() {
 	auth = &Authentication{
@@ -31,7 +42,7 @@ func gRpcClient() {
 	)
 
 	conn, err = corec.NewRpcClient(
-		corec.WithAddr(config.Cfg.Core),
+		corec.WithAddr(ListenAddr),
 		corec.WithDialOption(grpc.WithPerRPCCredentials(auth)),
 		corec.WithServerName("server.io"),
 		corec.WithCert([]byte(pb.Client_crt)),
