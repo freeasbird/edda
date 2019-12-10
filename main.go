@@ -23,14 +23,12 @@ import (
 	"runtime"
 
 	"github.com/offer365/edda/asset"
-	"github.com/offer365/edda/config"
 	"github.com/offer365/edda/controller"
 
 	log "github.com/sirupsen/logrus"
 )
 
 var (
-	cfg       *config.Configuration
 	debug     bool
 	AssetPath string
 )
@@ -56,7 +54,7 @@ func RestoreAsset() {
 }
 
 func init() {
-	// RestoreAsset()
+	RestoreAsset()
 	log.SetFormatter(&log.JSONFormatter{})
 	debug = true
 	if debug {

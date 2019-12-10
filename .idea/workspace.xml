@@ -2,24 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1e260136-cf08-4353-8009-57b9ba0696c1" name="默认更改列表" comment="">
-      <change afterPath="$PROJECT_DIR$/proto/core.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/proto/edda.core.pb.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/proto/edda.core.proto" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/asset/asset.go" beforeDir="false" afterPath="$PROJECT_DIR$/asset/asset.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/conf.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/conf.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/api.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/api.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logic/app.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/app.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logic/common.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logic/grpc.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/grpc.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logic/license.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/license.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logic/serial.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/serial.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/bootstrap.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/bootstrap.min.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/bootstrap.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/bootstrap.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/jquery-3.3.1.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/jquery-3.3.1.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/jquery.cookie.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/jquery.cookie.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/index.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
