@@ -25,9 +25,6 @@ func args() {
 
 func init() {
 	args()
-}
-
-func init() {
 	auth = &Authentication{
 		User:     _username,
 		Password: _password,

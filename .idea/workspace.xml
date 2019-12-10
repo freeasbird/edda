@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1e260136-cf08-4353-8009-57b9ba0696c1" name="默认更改列表" comment="" />
+    <list default="true" id="1e260136-cf08-4353-8009-57b9ba0696c1" name="默认更改列表" comment="">
+      <change beforePath="$PROJECT_DIR$/logic/grpc.go" beforeDir="false" afterPath="$PROJECT_DIR$/logic/grpc.go" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
