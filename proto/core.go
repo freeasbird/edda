@@ -214,12 +214,14 @@ func (a *auth) Authorized(ctx context.Context, req *AuthReq) (resp *AuthResp, er
 	for name, node := range sn.Nodes {
 		lic.Devices[name] = node.Attrs.Hwmd5
 	}
+
+	lic.Generate = time.Now().Unix()
+	lic.Update = lic.Generate
 	lic.Apps = make(map[string]*App, 0)
 	for _, app := range req.Apps {
+		app.MaxLifeCycle = (app.Expire -lic.Generate) / 60
 		lic.Apps[app.Key] = app
 	}
-	lic.Update = time.Now().Unix()
-	lic.Generate = time.Now().Unix()
 	resp = new(AuthResp)
 	resp.Cipher = new(Cipher)
 	if resp.Cipher.Code, err = a.lic2Str(lic); err != nil {
