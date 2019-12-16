@@ -1,4 +1,4 @@
-package controller
+package eddaX
 
 import (
 	"context"
@@ -8,17 +8,8 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/offer365/edda/logic"
-	pb "github.com/offer365/edda/proto"
-)
 
-var (
-	User     = "admin"
-	secrets  = gin.H{}
-	Accounts gin.Accounts
-	salt     = []byte("build857484914")
 )
-
 
 // 解绑
 func UntiedApi(c *gin.Context) {
@@ -28,11 +19,11 @@ func UntiedApi(c *gin.Context) {
 
 	app = c.Param("app")
 	id = c.Param("id")
-	req := pb.UntiedReq{
+	req := UntiedReq{
 		App: app,
 		Id:  id,
 	}
-	cipher, err := pb.Auth.Untied(context.TODO(), &req)
+	cipher, err := AuthServer.Untied(context.TODO(), &req)
 	if err != nil {
 		c.JSON(401, map[string]string{"code": "error"})
 		return
@@ -65,7 +56,7 @@ func AppAPI(c *gin.Context) {
 
 	switch c.Request.Method {
 	case "PUT":
-		id, err := logic.InsertApp(c.Request.Body)
+		id, err := InsertApp(c.Request.Body)
 		if err != nil {
 			c.JSON(200, gin.H{"code": 404, "msg": err.Error(), "data": nil})
 			return
@@ -76,7 +67,7 @@ func AppAPI(c *gin.Context) {
 		// one
 		if id != "" {
 			_id,err:=strconv.Atoi(id)
-			data := logic.FindOneApp(_id)
+			data := FindOneApp(_id)
 			if err != nil {
 				c.JSON(200, gin.H{"code": 404, "msg": err.Error(), "data": nil})
 				return
@@ -85,7 +76,7 @@ func AppAPI(c *gin.Context) {
 			return
 		}
 		// many
-		data:= logic.FindAllApp()
+		data:= FindAllApp()
 		if err != nil {
 			c.JSON(200, gin.H{"code": 404, "msg": err.Error(), "data": nil})
 			return
@@ -94,7 +85,7 @@ func AppAPI(c *gin.Context) {
 		return
 	case "DELETE":
 		_id,err:=strconv.Atoi(id)
-		logic.DeleteApp(_id)
+		DeleteApp(_id)
 		if err != nil {
 			c.JSON(200, gin.H{"code": 404, "msg": err.Error(), "data": nil})
 			return
@@ -103,7 +94,7 @@ func AppAPI(c *gin.Context) {
 		return
 	case "POST":
 		_id,err:=strconv.Atoi(id)
-		logic.UpdateApp(_id, c.Request.Body)
+		UpdateApp(_id, c.Request.Body)
 		if err != nil {
 			c.JSON(200, gin.H{"code": 404, "msg": err.Error(), "data": nil})
 			return
@@ -120,7 +111,7 @@ func AppAPI(c *gin.Context) {
 }
 
 func LicenseAPI(c *gin.Context)  {
-	if code,err:=logic.GenAuth(c.Request.Body);err==nil{
+	if code,err:=GenAuth(c.Request.Body);err==nil{
 		c.JSON(200,gin.H{"code":200,"data":code})
 	}
 }
@@ -135,43 +126,43 @@ func ServerAPI(c *gin.Context) {
 	ctx := context.TODO()
 	switch c.Param("do") {
 	case "resolved":
-		req := new(pb.Cipher)
+		req := new(Cipher)
 		err = json.Unmarshal(data, req)
 		if err != nil {
 			return
 		}
 
-		resp, err := pb.Auth.Resolved(ctx, req)
+		resp, err := AuthServer.Resolved(ctx, req)
 		c.JSON(200, gin.H{"serial": resp, "msg": err})
 		return
 	case "authorized":
-		req := new(pb.AuthReq)
+		req := new(AuthReq)
 		err = json.Unmarshal(data, req)
 		if err != nil {
 			return
 		}
 
-		resp, err := pb.Auth.Authorized(ctx, req)
+		resp, err := AuthServer.Authorized(ctx, req)
 		c.JSON(200, gin.H{"auth": resp, "msg": err})
 		return
 	case "untied":
-		req := new(pb.UntiedReq)
+		req := new(UntiedReq)
 		err = json.Unmarshal(data, req)
 		if err != nil {
 			return
 		}
 
-		resp, err := pb.Auth.Untied(ctx, req)
+		resp, err := AuthServer.Untied(ctx, req)
 		c.JSON(200, gin.H{"cipher": resp, "msg": err})
 		return
 	case "cleared":
-		req := new(pb.Cipher)
+		req := new(Cipher)
 		err = json.Unmarshal(data, req)
 		if err != nil {
 			return
 		}
 
-		resp, err := pb.Auth.Cleared(ctx, req)
+		resp, err := AuthServer.Cleared(ctx, req)
 		c.JSON(200, gin.H{"clear": resp, "msg": err})
 		return
 	default:
@@ -208,7 +199,7 @@ func ServerAPI(c *gin.Context) {
 //
 //		switch c.Request.Method {
 //		case "PUT":
-//			id, err := logic.InsertApp(collection, c.Request.Body)
+//			id, err := InsertApp(collection, c.Request.Body)
 //			if err != nil {
 //				c.JSON(200, gin.H{"code": 404, "msg": err.Error(), "data": nil})
 //				return
@@ -218,7 +209,7 @@ func ServerAPI(c *gin.Context) {
 //		case "GET":
 //			// one
 //			if id != "" {
-//				data, err := logic.FindOneApp(collection, id)
+//				data, err := FindOneApp(collection, id)
 //				if err != nil {
 //					c.JSON(200, gin.H{"code": 404, "msg": err.Error(), "data": nil})
 //					return
@@ -227,7 +218,7 @@ func ServerAPI(c *gin.Context) {
 //				return
 //			}
 //			// many
-//			data, err := logic.FindAllApp(collection, (page-1)*size, size)
+//			data, err := FindAllApp(collection, (page-1)*size, size)
 //			if err != nil {
 //				c.JSON(200, gin.H{"code": 404, "msg": err.Error(), "data": nil})
 //				return
@@ -235,7 +226,7 @@ func ServerAPI(c *gin.Context) {
 //			c.JSON(200, gin.H{"code": 200, "msg": "success", "data": data})
 //			return
 //		case "DELETE":
-//			err := logic.Delete(collection, id)
+//			err := Delete(collection, id)
 //			if err != nil {
 //				c.JSON(200, gin.H{"code": 404, "msg": err.Error(), "data": nil})
 //				return
@@ -243,7 +234,7 @@ func ServerAPI(c *gin.Context) {
 //			c.JSON(200, gin.H{"code": 200, "msg": "success", "data": nil})
 //			return
 //		case "POST":
-//			msg, err := logic.ResolveSerial(c.PostForm("code"))
+//			msg, err := ResolveSerial(c.PostForm("code"))
 //			if err != nil {
 //				c.JSON(200, gin.H{"code": 404, "msg": err.Error(), "data": nil})
 //				return
@@ -285,7 +276,7 @@ func ServerAPI(c *gin.Context) {
 //		}
 //		switch c.Request.Method {
 //		case "PUT":
-//			id, err := logic.InsertNode(collection, c.Request.Body)
+//			id, err := InsertNode(collection, c.Request.Body)
 //			if err != nil {
 //				c.JSON(200, gin.H{"code": 404, "msg": err.Error(), "data": nil})
 //				return
@@ -295,7 +286,7 @@ func ServerAPI(c *gin.Context) {
 //		case "GET":
 //			// one
 //			if id != "" {
-//				data, err := logic.FindOneNode(collection, id)
+//				data, err := FindOneNode(collection, id)
 //				if err != nil {
 //					c.JSON(200, gin.H{"code": 404, "msg": err.Error(), "data": nil})
 //					return
@@ -304,7 +295,7 @@ func ServerAPI(c *gin.Context) {
 //				return
 //			}
 //			// many
-//			data, err := logic.FindNode(collection, bson.D{}, (page-1)*size, size)
+//			data, err := FindNode(collection, bson.D{}, (page-1)*size, size)
 //			if err != nil {
 //				c.JSON(200, gin.H{"code": 404, "msg": err.Error(), "data": nil})
 //				return
@@ -312,7 +303,7 @@ func ServerAPI(c *gin.Context) {
 //			c.JSON(200, gin.H{"code": 200, "msg": "success", "data": data})
 //			return
 //		case "DELETE":
-//			err := logic.Delete(collection, id)
+//			err := Delete(collection, id)
 //			if err != nil {
 //				c.JSON(200, gin.H{"code": 404, "msg": err.Error(), "data": nil})
 //				return
@@ -320,7 +311,7 @@ func ServerAPI(c *gin.Context) {
 //			c.JSON(200, gin.H{"code": 200, "msg": "success", "data": nil})
 //			return
 //		case "POST":
-//			err := logic.Update(collection, id, c.Request.Body)
+//			err := Update(collection, id, c.Request.Body)
 //			if err != nil {
 //				c.JSON(200, gin.H{"code": 404, "msg": err.Error(), "data": nil})
 //				return
@@ -367,7 +358,7 @@ func ServerAPI(c *gin.Context) {
 //				c.JSON(200, gin.H{"code": 404, "msg": "No permission.", "data": nil})
 //				return
 //			}
-//			id, err := logic.InsertCustomer(collection, c.Request.Body)
+//			id, err := InsertCustomer(collection, c.Request.Body)
 //			if err != nil {
 //				c.JSON(200, gin.H{"code": 404, "msg": err.Error(), "data": nil})
 //				return
@@ -377,7 +368,7 @@ func ServerAPI(c *gin.Context) {
 //		case "GET":
 //			// one
 //			if id != "" {
-//				data, err := logic.FindOneCustomer(collection, id)
+//				data, err := FindOneCustomer(collection, id)
 //				if err != nil {
 //					c.JSON(200, gin.H{"code": 404, "msg": err.Error(), "data": nil})
 //					return
@@ -386,7 +377,7 @@ func ServerAPI(c *gin.Context) {
 //				return
 //			}
 //			// many
-//			data, err := logic.FindAllCustomer(collection, (page-1)*size, size)
+//			data, err := FindAllCustomer(collection, (page-1)*size, size)
 //			if err != nil {
 //				c.JSON(200, gin.H{"code": 404, "msg": err.Error(), "data": nil})
 //				return
@@ -398,7 +389,7 @@ func ServerAPI(c *gin.Context) {
 //				c.JSON(200, gin.H{"code": 404, "msg": "No permission.", "data": nil})
 //				return
 //			}
-//			err := logic.Delete(collection, id)
+//			err := Delete(collection, id)
 //			if err != nil {
 //				c.JSON(200, gin.H{"code": 404, "msg": err.Error(), "data": nil})
 //				return
@@ -410,7 +401,7 @@ func ServerAPI(c *gin.Context) {
 //				c.JSON(200, gin.H{"code": 404, "msg": "No permission.", "data": nil})
 //				return
 //			}
-//			err := logic.Update(collection, id, c.Request.Body)
+//			err := Update(collection, id, c.Request.Body)
 //			if err != nil {
 //				c.JSON(200, gin.H{"code": 404, "msg": err.Error(), "data": nil})
 //				return

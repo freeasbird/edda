@@ -1,4 +1,4 @@
-package proto
+package eddaX
 
 import (
 	"context"
@@ -7,9 +7,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/offer365/example/endecrypt"
 	cores "github.com/offer365/example/grpc/core/server"
-	"github.com/offer365/example/tools"
 	uuid "github.com/satori/go.uuid"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -19,19 +17,18 @@ import (
 
 
 var (
-	salt      = []byte(hashSalt)
-	Auth      AuthorizationServer
+	AuthServer      AuthorizationServer
 )
 
 func init() {
-	Auth = NewAuthServer()
+	AuthServer = NewAuthServer()
 }
 
 func NewAuthServer() AuthorizationServer {
-	return &auth{}
+	return &authServer{}
 }
 
-type auth struct {}
+type authServer struct {}
 
 type untied struct {
 	Key   string `json:"key"`
@@ -40,7 +37,7 @@ type untied struct {
 }
 
 // 解析序列号
-func (a *auth) Resolved(ctx context.Context, cipher *Cipher) (sn *SerialNum, err error) {
+func (a *authServer) Resolved(ctx context.Context, cipher *Cipher) (sn *SerialNum, err error) {
 	var (
 		byt []byte
 	)
@@ -48,7 +45,7 @@ func (a *auth) Resolved(ctx context.Context, cipher *Cipher) (sn *SerialNum, err
 		return
 	}
 	// 私钥解密
-	if byt, err = endecrypt.Decrypt(endecrypt.Pri1AesRsa2048, byt); err != nil {
+	if byt, err = Cfg.SerialDecrypt(byt); err != nil {
 		return
 	}
 	if byt == nil || len(byt) == 0 {
@@ -70,7 +67,7 @@ func (a *auth) Resolved(ctx context.Context, cipher *Cipher) (sn *SerialNum, err
 }
 
 // 生成授全信息
-func (a *auth) Authorized(ctx context.Context, req *AuthReq) (resp *AuthResp, err error) {
+func (a *authServer) Authorized(ctx context.Context, req *AuthReq) (resp *AuthResp, err error) {
 	var (
 		sn  *SerialNum
 		lic *License
@@ -107,7 +104,7 @@ func (a *auth) Authorized(ctx context.Context, req *AuthReq) (resp *AuthResp, er
 }
 
 // 生成解绑码
-func (a *auth) Untied(ctx context.Context, req *UntiedReq) (cipher *Cipher, err error) {
+func (a *authServer) Untied(ctx context.Context, req *UntiedReq) (cipher *Cipher, err error) {
 	var (
 		byt []byte
 	)
@@ -116,14 +113,14 @@ func (a *auth) Untied(ctx context.Context, req *UntiedReq) (cipher *Cipher, err 
 		return
 	}
 	untie := &untied{
-		Key:   tools.Sha256sum([]byte(req.App), salt),
-		Value: tools.Sha256sum([]byte(req.Id), salt),
+		Key:   Cfg.TokenHash([]byte(req.App)),
+		Value: Cfg.TokenHash([]byte(req.Id)),
 		Date:  time.Now().Unix(),
 	}
 	if byt, err = json.Marshal(untie); err != nil {
 		return
 	}
-	if byt, err = endecrypt.Encrypt(endecrypt.Pri1AesRsa2048, byt); err != nil {
+	if byt, err = Cfg.UntiedEncrypt(byt); err != nil {
 		return
 	}
 	cipher = &Cipher{Code: base64.StdEncoding.EncodeToString(byt)}
@@ -131,7 +128,7 @@ func (a *auth) Untied(ctx context.Context, req *UntiedReq) (cipher *Cipher, err 
 }
 
 // 解析注销码
-func (a *auth) Cleared(ctx context.Context, cipher *Cipher) (clear *Clear, err error) {
+func (a *authServer) Cleared(ctx context.Context, cipher *Cipher) (clear *Clear, err error) {
 	var (
 		byt []byte
 	)
@@ -161,7 +158,7 @@ func (a *auth) Cleared(ctx context.Context, cipher *Cipher) (clear *Clear, err e
 }
 
 // 反序列化license
-func (a *auth) str2lic(cipher string) (lic *License, err error) {
+func (a *authServer) str2lic(cipher string) (lic *License, err error) {
 	var (
 		byt []byte
 	)
@@ -172,7 +169,7 @@ func (a *auth) str2lic(cipher string) (lic *License, err error) {
 		return
 	}
 	lic = new(License)
-	if byt, err = endecrypt.Decrypt(endecrypt.Pub1AesRsa2048, byt); err != nil {
+	if byt, err = Cfg.LicenseDecrypt(byt); err != nil {
 		return
 	}
 	if err = json.Unmarshal(byt, lic); err != nil {
@@ -181,7 +178,7 @@ func (a *auth) str2lic(cipher string) (lic *License, err error) {
 	return
 }
 
-func (a *auth) lic2Str(lic interface{}) (cipher string, err error) {
+func (a *authServer) lic2Str(lic interface{}) (cipher string, err error) {
 	var (
 		byt []byte
 	)
@@ -190,7 +187,7 @@ func (a *auth) lic2Str(lic interface{}) (cipher string, err error) {
 		return
 	}
 	// 私钥加密
-	if byt, err = endecrypt.Encrypt(endecrypt.Pri1AesRsa2048, byt); err != nil {
+	if byt, err = Cfg.LicenseEncrypt(byt); err != nil {
 		return
 	}
 	return base64.StdEncoding.EncodeToString(byt), err
@@ -214,7 +211,7 @@ func AuthGRpcServer() (*grpc.Server, error) {
 			pwd = val[0]
 		}
 
-		if user != _username || pwd != _password {
+		if user != Cfg.GRpcUser || pwd != Cfg.GRpcPwd {
 			return status.Errorf(codes.Unauthenticated, "invalid token")
 		}
 
@@ -235,9 +232,9 @@ func AuthGRpcServer() (*grpc.Server, error) {
 	// 实例化grpc Server
 	return cores.NewRpcServer(
 		cores.WithServerOption(grpc.UnaryInterceptor(interceptor)),
-		cores.WithCert([]byte(Server_crt)),
-		cores.WithKey([]byte(Server_key)),
-		cores.WithCa([]byte(Ca_crt)),
+		cores.WithCert([]byte(Cfg.GRpcServerCrt)),
+		cores.WithKey([]byte(Cfg.GRpcServerKey)),
+		cores.WithCa([]byte(Cfg.GRpcCaCrt)),
 	)
 }
 

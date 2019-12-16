@@ -1,16 +1,15 @@
-package logic
+package eddaX
 
 import (
 	"encoding/json"
 	"io"
 	"io/ioutil"
 
-	pb "github.com/offer365/edda/proto"
 )
 
 type APP struct {
 	ID int `bson:"id" json:"id"`
-	pb.App
+	App
 }
 
 var apps []*APP

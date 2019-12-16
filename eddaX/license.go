@@ -1,4 +1,4 @@
-package logic
+package eddaX
 
 import (
 	"context"
@@ -6,12 +6,11 @@ import (
 	"io"
 	"io/ioutil"
 
-	pb "github.com/offer365/edda/proto"
 )
 
 type Result struct {
 	SerialNum string             `json:"serial_num"`
-	Apps      map[string]*pb.App `json:"apps"`
+	Apps      map[string]*App `json:"apps"`
 }
 
 func GenAuth(body io.Reader) (code string,err error)  {
@@ -24,14 +23,14 @@ func GenAuth(body io.Reader) (code string,err error)  {
 	if err != nil {
 		return
 	}
-	cipher:=&pb.Cipher{
+	cipher:=&Cipher{
 		Code:                 result.SerialNum,
 	}
-	ar:=&pb.AuthReq{
+	ar:=&AuthReq{
 		Cipher:               cipher,
 		Apps:                 result.Apps,
 	}
-	authresp,err:=pb.Auth.Authorized(context.Background(),ar)
+	authresp,err:=AuthServer.Authorized(context.Background(),ar)
 	return  authresp.Cipher.Code,err
 
 }
