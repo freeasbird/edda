@@ -17,7 +17,7 @@ import (
 
 
 var (
-	AuthServer      AuthorizationServer
+	  AuthServer      AuthorizationServer
 )
 
 func init() {

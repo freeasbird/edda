@@ -3,7 +3,8 @@ package utils
 import (
 	"crypto/md5"
 	"crypto/sha256"
-	"encoding/base64"
+	"crypto/sha512"
+	"encoding/hex"
 	"fmt"
 
 	"golang.org/x/crypto/scrypt"
@@ -27,28 +28,37 @@ func Abs(a int64) int64 {
 	return (a ^ a>>31) - a>>31
 }
 
-func Md5sum(byt, salt []byte) string {
+func Md5Hex(byt []byte, salt []byte) string {
 	h := md5.New()
 	if salt != nil {
 		byt = append(byt, salt...)
 	}
 	h.Write(byt)
-	return base64.StdEncoding.EncodeToString(h.Sum(nil))
+	return hex.EncodeToString(h.Sum(nil))
 }
 
-func Sha256sum(byt, salt []byte) string {
+func Sha256Hex(byt []byte, salt []byte) string {
 	h := sha256.New()
 	if salt != nil {
 		byt = append(byt, salt...)
 	}
 	h.Write(byt)
-	return base64.StdEncoding.EncodeToString(h.Sum(nil))
+	return hex.EncodeToString(h.Sum(nil))
+}
+
+func Sha512Hex(byt []byte, salt []byte) string {
+	h := sha512.New()
+	if salt != nil {
+		byt = append(byt, salt...)
+	}
+	h.Write(byt)
+	return hex.EncodeToString(h.Sum(nil))
 }
 
 func Scrypt(src, salt []byte) string {
-	byt,err:=scrypt.Key(src, salt, 1<<15, 8, 1, 32)
-	if err!=nil{
+	byt, err := scrypt.Key(src, salt, 1<<15, 8, 1, 32)
+	if err != nil {
 		return ""
 	}
-	return base64.StdEncoding.EncodeToString(byt)
+	return hex.EncodeToString(byt)
 }

@@ -14,6 +14,7 @@ type Result struct {
 }
 
 func GenAuth(body io.Reader) (code string,err error)  {
+	var authresp *AuthResp
 	byt, err := ioutil.ReadAll(body)
 	if err != nil {
 		return
@@ -30,7 +31,9 @@ func GenAuth(body io.Reader) (code string,err error)  {
 		Cipher:               cipher,
 		Apps:                 result.Apps,
 	}
-	authresp,err:=AuthServer.Authorized(context.Background(),ar)
+	if authresp,err=AuthServer.Authorized(context.Background(),ar);err!=nil{
+		return
+	}
 	return  authresp.Cipher.Code,err
 
 }
