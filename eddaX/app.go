@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"io"
 	"io/ioutil"
-
 )
 
 type APP struct {
@@ -35,18 +34,18 @@ func InsertApp(body io.Reader) (id string, err error) {
 	if err != nil {
 		return
 	}
-	instance.ID=len(apps)
+	instance.ID = len(apps)
 	apps = append(apps, instance)
 	return
 }
 
-func DeleteApp(i int)  {
-	if i < len(apps){
+func DeleteApp(i int) {
+	if i < len(apps) {
 		apps = append(apps[:i], apps[i+1:]...)
 	}
 }
 
-func UpdateApp(i int,body io.Reader)  {
+func UpdateApp(i int, body io.Reader) {
 	byt, err := ioutil.ReadAll(body)
 	if err != nil {
 		return
@@ -56,6 +55,6 @@ func UpdateApp(i int,body io.Reader)  {
 	if err != nil {
 		return
 	}
-	apps[i]=instance
+	apps[i] = instance
 	return
 }

@@ -5,15 +5,14 @@ import (
 	"encoding/json"
 	"io"
 	"io/ioutil"
-
 )
 
 type Result struct {
-	SerialNum string             `json:"serial_num"`
+	SerialNum string          `json:"serial_num"`
 	Apps      map[string]*App `json:"apps"`
 }
 
-func GenAuth(body io.Reader) (code string,err error)  {
+func GenAuth(body io.Reader) (code string, err error) {
 	var authresp *AuthResp
 	byt, err := ioutil.ReadAll(body)
 	if err != nil {
@@ -24,16 +23,16 @@ func GenAuth(body io.Reader) (code string,err error)  {
 	if err != nil {
 		return
 	}
-	cipher:=&Cipher{
-		Code:                 result.SerialNum,
+	cipher := &Cipher{
+		Code: result.SerialNum,
 	}
-	ar:=&AuthReq{
-		Cipher:               cipher,
-		Apps:                 result.Apps,
+	ar := &AuthReq{
+		Cipher: cipher,
+		Apps:   result.Apps,
 	}
-	if authresp,err=AuthServer.Authorized(context.Background(),ar);err!=nil{
+	if authresp, err = AuthServer.Authorized(context.Background(), ar); err != nil {
 		return
 	}
-	return  authresp.Cipher.Code,err
+	return authresp.Cipher.Code, err
 
 }

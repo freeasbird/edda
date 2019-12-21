@@ -103,12 +103,12 @@ message License {
 }
 
 message AuthReq {
-    Cipher cipher=1;
-    map<string, App> apps=3;
+    Cipher cipher = 1;
+    map<string, App> apps = 3;
 }
 
 message AuthResp {
-    Cipher cipher=1;
+    Cipher cipher = 1;
     License lic = 2;
 }
 
@@ -123,15 +123,15 @@ message Clear {
     int64 date = 3;
 }
 
-message Cipher{
-   string code = 1;
+message Cipher {
+    string code = 1;
 }
 
 service Authorization {
     rpc Resolved (Cipher) returns (SerialNum); // 解析序列号
     rpc Authorized (AuthReq) returns (AuthResp); // 授权
     rpc Untied (UntiedReq) returns (Cipher); // 解绑
-    rpc Cleared (Cipher) returns (Clear);  // 清除
+    rpc Cleared (Cipher) returns (Clear); // 清除
 }
 
 

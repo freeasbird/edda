@@ -9,8 +9,8 @@ import (
 	"github.com/offer365/example/endecrypt/endersa"
 )
 
-func main()  {
-	cfg:=&eddaX.Config{
+func main() {
+	cfg := &eddaX.Config{
 		GRpcServerCrt:  server_crt,
 		GRpcServerKey:  server_key,
 		GRpcClientCrt:  client_crt,
@@ -20,17 +20,16 @@ func main()  {
 		GRpcPwd:        grpcPwd,
 		GRpcServerName: server_name,
 		GRpcListen:     "19527",
-		LicenseEncrypt:             licenseEncrypt1,
-		LicenseDecrypt:             licenseDecrypt1,
-		SerialEncrypt:              serialEncrypt1,
-		SerialDecrypt:              serialDecrypt1,
-		UntiedEncrypt:              untiedEncrypt1,
-		UntiedDecrypt:              untiedDecrypt1,
-		TokenHash:                  HashFunc1,
+		LicenseEncrypt: licenseEncrypt1,
+		LicenseDecrypt: licenseDecrypt1,
+		SerialEncrypt:  serialEncrypt1,
+		SerialDecrypt:  serialDecrypt1,
+		UntiedEncrypt:  untiedEncrypt1,
+		UntiedDecrypt:  untiedDecrypt1,
+		TokenHash:      HashFunc1,
 	}
 	eddaX.Start(cfg)
 }
-
 
 // odin & edda
 
@@ -38,6 +37,7 @@ func main()  {
 func licenseEncrypt1(src []byte) ([]byte, error) {
 	return endeaesrsa.PubEncrypt(src, []byte(_rsa2048pub1), []byte(_aes256key1))
 }
+
 // Pri Decrypt Rsa2048 Aes256
 func licenseDecrypt1(src []byte) ([]byte, error) {
 	return endeaesrsa.PriDecrypt(src, []byte(_rsa2048pri1), []byte(_aes256key1))
@@ -57,6 +57,7 @@ func licenseDecrypt2(src []byte) ([]byte, error) {
 func serialEncrypt1(src []byte) ([]byte, error) {
 	return endeaesrsa.PubEncrypt(src, []byte(_rsa2048pub2), []byte(_aes256key2))
 }
+
 // Pri Decrypt Rsa2048 Aes256
 func serialDecrypt1(src []byte) ([]byte, error) {
 	return endeaesrsa.PriDecrypt(src, []byte(_rsa2048pri2), []byte(_aes256key2))
@@ -72,11 +73,11 @@ func serialDecrypt2(src []byte) ([]byte, error) {
 	return endeaesrsaecc.PriDecrypt(src, []byte(_eccpri2), []byte(_rsa2048pri2), []byte(_aes256key2))
 }
 
-
 // Pub Encrypt Rsa2048 Aes256
 func untiedEncrypt1(src []byte) ([]byte, error) {
 	return endeaesrsa.PubEncrypt(src, []byte(_rsa2048pub3), []byte(_aes256key3))
 }
+
 // Pri Decrypt Rsa2048 Aes256
 func untiedDecrypt1(src []byte) ([]byte, error) {
 	return endeaesrsa.PriDecrypt(src, []byte(_rsa2048pri3), []byte(_aes256key3))

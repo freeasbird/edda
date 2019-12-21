@@ -15,9 +15,8 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-
 var (
-	  AuthServer      AuthorizationServer
+	AuthServer AuthorizationServer
 )
 
 func init() {
@@ -28,7 +27,7 @@ func NewAuthServer() AuthorizationServer {
 	return &authServer{}
 }
 
-type authServer struct {}
+type authServer struct{}
 
 type untied struct {
 	Key   string `json:"key"`
@@ -90,9 +89,10 @@ func (a *authServer) Authorized(ctx context.Context, req *AuthReq) (resp *AuthRe
 	lic.Generate = time.Now().Unix()
 	lic.Update = lic.Generate
 	lic.Apps = make(map[string]*App, 0)
-	for _, app := range req.Apps {
-		app.MaxLifeCycle = (app.Expire -lic.Generate) / 60
-		lic.Apps[app.Key] = app
+	for key, app := range req.Apps {
+		app.MaxLifeCycle = (app.Expire - lic.Generate) / 60
+		app.Key = key
+		lic.Apps[key] = app
 	}
 	resp = new(AuthResp)
 	resp.Cipher = new(Cipher)

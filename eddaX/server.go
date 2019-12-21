@@ -25,12 +25,11 @@ import (
 )
 
 var (
-	AssetPath string
-	User     = "admin"
-	gs      *grpc.Server
-	ListenAddr  string
+	AssetPath  string
+	User       = "admin"
+	gs         *grpc.Server
+	ListenAddr string
 )
-
 
 func args() {
 	flag.StringVar(&ListenAddr, "l", ":19527", "listen addr.")

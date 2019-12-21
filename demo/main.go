@@ -4,20 +4,19 @@ import (
 	"context"
 	"flag"
 
-	corec "github.com/offer365/example/grpc/core/client"
 	"github.com/offer365/edda/eddaX"
+	corec "github.com/offer365/example/grpc/core/client"
 	"google.golang.org/grpc"
 )
 
 var (
-	auth      *Authentication
-	_username = "C205v406x68f5IM7"
-	_password = "c9bJ3v7FQ11681EP"
-	cli       eddaX.AuthorizationClient
-	ListenAddr  string
-	Cfg *eddaX.Config
+	auth       *Authentication
+	_username  = "C205v406x68f5IM7"
+	_password  = "c9bJ3v7FQ11681EP"
+	cli        eddaX.AuthorizationClient
+	ListenAddr string
+	Cfg        *eddaX.Config
 )
-
 
 func args() {
 	flag.StringVar(&ListenAddr, "l", ":19527", "listen addr.")
@@ -31,7 +30,7 @@ func main() {
 		Password: _password,
 	}
 
-	Cfg=&eddaX.Config{
+	Cfg = &eddaX.Config{
 		GRpcServerCrt:  "",
 		GRpcServerKey:  "",
 		GRpcClientCrt:  "",

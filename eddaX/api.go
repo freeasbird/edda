@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-
 )
 
 // 解绑
@@ -34,7 +33,7 @@ func UntiedApi(c *gin.Context) {
 // 应用
 func AppAPI(c *gin.Context) {
 	var (
-		id         string
+		id string
 	)
 
 	id = c.Param("id")
@@ -66,7 +65,7 @@ func AppAPI(c *gin.Context) {
 	case "GET":
 		// one
 		if id != "" {
-			_id,err:=strconv.Atoi(id)
+			_id, err := strconv.Atoi(id)
 			data := FindOneApp(_id)
 			if err != nil {
 				c.JSON(200, gin.H{"code": 404, "msg": err.Error(), "data": nil})
@@ -76,7 +75,7 @@ func AppAPI(c *gin.Context) {
 			return
 		}
 		// many
-		data:= FindAllApp()
+		data := FindAllApp()
 		if err != nil {
 			c.JSON(200, gin.H{"code": 404, "msg": err.Error(), "data": nil})
 			return
@@ -84,7 +83,7 @@ func AppAPI(c *gin.Context) {
 		c.JSON(200, gin.H{"code": 200, "msg": "success", "data": data})
 		return
 	case "DELETE":
-		_id,err:=strconv.Atoi(id)
+		_id, err := strconv.Atoi(id)
 		DeleteApp(_id)
 		if err != nil {
 			c.JSON(200, gin.H{"code": 404, "msg": err.Error(), "data": nil})
@@ -93,7 +92,7 @@ func AppAPI(c *gin.Context) {
 		c.JSON(200, gin.H{"code": 200, "msg": "success", "data": nil})
 		return
 	case "POST":
-		_id,err:=strconv.Atoi(id)
+		_id, err := strconv.Atoi(id)
 		UpdateApp(_id, c.Request.Body)
 		if err != nil {
 			c.JSON(200, gin.H{"code": 404, "msg": err.Error(), "data": nil})
@@ -110,12 +109,11 @@ func AppAPI(c *gin.Context) {
 
 }
 
-func LicenseAPI(c *gin.Context)  {
-	if code,err:=GenAuth(c.Request.Body);err==nil{
-		c.JSON(200,gin.H{"code":200,"data":code})
+func LicenseAPI(c *gin.Context) {
+	if code, err := GenAuth(c.Request.Body); err == nil {
+		c.JSON(200, gin.H{"code": 200, "data": code})
 	}
 }
-
 
 func ServerAPI(c *gin.Context) {
 	data, err := ioutil.ReadAll(c.Request.Body)
@@ -169,7 +167,6 @@ func ServerAPI(c *gin.Context) {
 		c.JSON(404, nil)
 	}
 }
-
 
 // 序列号
 // func SerialAPI(c *gin.Context) {

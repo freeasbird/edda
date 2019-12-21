@@ -39,7 +39,7 @@ type Config struct {
 	TokenHash      HashFunc
 }
 
-func NewConfig() *Config  {
+func NewConfig() *Config {
 	return &Config{
 		GRpcServerCrt:  "",
 		GRpcServerKey:  "",
@@ -80,7 +80,7 @@ func (cfg Config) CheckValue() (err error) {
 	return
 }
 
-func Start(cfg *Config)  {
+func Start(cfg *Config) {
 	if err := cfg.CheckValue(); err != nil {
 		log.Sugar.Fatal(err)
 		return
