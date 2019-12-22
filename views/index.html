@@ -163,8 +163,7 @@
                                     <form>
                                         <div class="form-group">
                                             <label for="untied-id">应用/ID</label>
-                                            <input type="text" class="form-control" id="untied-id"
-                                                   placeholder="eg:nlp/app01">
+                                            <input type="text" class="form-control" id="untied-id" placeholder="eg:nlp/app01">
                                         </div>
                                         <div class="form-group">
                                             <textarea name="serial-num" cols="2" rows="10" placeholder="解绑码"
@@ -639,15 +638,15 @@
                 let app_key = $(this).find("input").eq(0).val();
                 app["name"] = $(this).find('h4').html();
                 let exp = $(this).find("input[type='date']").val();
-                let timestamp = new Date(exp).getTime() / 1000;
+                let timestamp = new Date(exp).getTime()/1000;
                 app["expire"] = timestamp;
                 let ins = parseInt($(this).find("input").eq(2).val());
                 app["instance"] = ins;
                 app.attrs = new Array();
                 $(this).find("div.form-app-attr").each(function () {
-                    let attr = {};
+                    let attr={};
                     let key = $(this).find("input").eq(0).val();
-                    let name = $(this).find("label").eq(0).html();
+                    let name =$(this).find("label").eq(0).html();
                     let val = parseInt($(this).find("input").eq(1).val());
                     attr["key"] = key;
                     attr["name"] = name;
@@ -756,8 +755,8 @@
                         // console.log(lic)
                         let tr = $('<tr></tr>');
                         tr.append($('<td></td>').html(formatTime(lic.generate)));
-                        let href = base_url + "/cipher/" + lic.id;
-                        tr.append($('<td><a class="opt-btn btn text-primary" href="javascript:void(0)" onClick="DetailLicense($(this))">详情</a><a class="opt-btn btn text-primary" href="javascript:void(0)" onClick="CopyCipher($(this))">复制</a><a class="opt-btn btn text-primary" href=' + href + '>下载</a></td>'));
+                        let href=base_url+"/cipher/"+lic.id;
+                        tr.append($('<td><a class="opt-btn btn text-primary" href="javascript:void(0)" onClick="DetailLicense($(this))">详情</a><a class="opt-btn btn text-primary" href="javascript:void(0)" onClick="CopyCipher($(this))">复制</a><a class="opt-btn btn text-primary" href='+href+'>下载</a></td>'));
                         tr.append($("<input type='hidden'>").val(lic.id));
                         $("#license-list-body").append(tr)
                     }
@@ -767,9 +766,9 @@
 
         // 解绑应用
         function UntiedApp() {
-            let id = $("#untied-id").val();
+            let id=$("#untied-id").val();
             $.ajax({
-                url: base_url + "/untied/" + id,
+                url: base_url + "/untied/"+id,
                 type: "GET",
                 username: $.cookie(cookie_username_key),
                 password: $.cookie(cookie_password_key),
@@ -800,7 +799,7 @@
         }
 
         function formatTime(obj) {
-            let data = new Date(obj * 1000);
+            let data = new Date(obj*1000);
             let year = data.getFullYear();  //获取年
             let month = data.getMonth() + 1;    //获取月
             let day = data.getDate(); //获取日
